@@ -49,7 +49,7 @@ float slowdownDuration = 0.5;
 float timerSlowDown = 0.0f;
 
 
-Vector2 gravity = {0,100};
+Vector2 gravity = {0,200};
 
 Vector2 velocity = gravity;
 Vector2 playerPos = {10 , 12};
