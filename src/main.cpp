@@ -30,6 +30,41 @@ Vector2 operator*(Vector2 a, const float b)
     return a;
 }
 
+
+class player
+{
+
+       struct State
+   {
+    bool isGrounded;
+   };
+
+    // position dans la map
+    Vector2 position;
+
+    // vitesse qu'a le joueur
+    Vector2 velocity;
+
+   State state;
+
+   
+
+private:
+    /* data */
+public:
+    player(/* args */);
+    ~player();
+};
+
+player::player(/* args */)
+{
+}
+
+player::~player()
+{
+}
+
+
 constexpr Color BACKGROUND = BLUE;
 constexpr Color CHARACTER = PURPLE;
 constexpr int TAILLECHARACTER = 20;
@@ -41,7 +76,7 @@ int characterY = 12;
 
 int speed = 300;
 int jumpHeigh = 20;
-Vector2 jumpSpeed = {0,550};
+Vector2 jumpSpeed = {0,950}; 
 Vector2 slowdowGravityAfterFallFromJump = {0,1};
 int playerheightBeforeJump;
 float slowdownDuration = 0.5;
@@ -49,7 +84,7 @@ float slowdownDuration = 0.5;
 float timerSlowDown = 0.0f;
 
 
-Vector2 gravity = {0,100};
+Vector2 gravity = {0,500};
 
 Vector2 velocity = gravity;
 Vector2 playerPos = {10 , 12};
@@ -66,9 +101,6 @@ int main()
 {
 
 
-
-    
-    
     InitWindow(SCREENWIDTH, SCREENHEIGHT, "Raylib jeu de la vie");
     SetTargetFPS(60);
 
@@ -83,20 +115,6 @@ int main()
         
         deltaTime = GetFrameTime();
 
-        if (!grounded)
-        {
-            velocity = gravity*deltaTime;
-        }
-        
-        if (inJump)
-        {
-            velocity -= jumpSpeed * deltaTime;
-        }
-
-        if (startFallFromJump)
-        {
-            velocity -= slowdowGravityAfterFallFromJump * deltaTime;
-        }
 
         
         // Déplacement joueur
@@ -104,9 +122,9 @@ int main()
         {
             if (grounded)
             {
-                velocity.y =0;
+                
             }
-            velocity.x =+ speed * deltaTime;
+            
             // characterX+= speed;
         }
 
@@ -114,38 +132,23 @@ int main()
         {
             if (grounded)
             {
-                velocity.y = 0;
+               
             }
             
-            velocity.x =- speed * deltaTime;
-            // characterX-= speed;
+
         }
 
-        // if (IsKeyDown(KEY_UP))
-        // {
-        //     velocity.y = gravity.y - speed;
-        //     // characterY-= speed; // Monter
-        // }
 
-        // if (IsKeyDown(KEY_DOWN))
-        // {
-        //     velocity.y = gravity.y + speed;
-        //     // characterY+= speed; // Descendre
-        // }
 
         if (IsKeyDown(KEY_SPACE) && grounded) // il faut que ce soit une velociter constante pendant un certain temp
         {
-            playerheightBeforeJump = playerPos.y * deltaTime;
-            inJump = true;
-            // velocity.y = gravity.y - jumpForce;
-            // characterY-= speed; // Monter
+
         }
 
         
         
 
-        // La caméra suit le personnage
-        // camera.target = { (float)characterX, (float)characterY };
+
 
         BeginDrawing();
         ClearBackground(BACKGROUND);
@@ -154,35 +157,14 @@ int main()
 
         
 
-        // characterX += velocity.x;
-        // characterY += velocity.y;
-        positionCible = playerPos + velocity;
         bool r = CheckCollisionCircleRec(positionCible, TAILLECHARACTER, rect);
         if (!CheckCollisionCircleRec(positionCible, TAILLECHARACTER + 1, rect)) // si la prochaine pose n'overlap pas le rectagle
         {
-            playerPos += velocity;
-            if (grounded)
-            {
-                grounded = false;
-            }
-        }else
-        {
-            if (!grounded)
-            {
-                grounded = true;
-            }
+
             
         }
 
-        if (playerPos.y <= playerheightBeforeJump - jumpHeigh )
-        {
-            inJump = false;
-            startFallFromJump = true;
-        }
-        if (startFallFromJump)
-        {
-            timerSlowDown += GetFrameTime();
-        }
+
         
         
     
