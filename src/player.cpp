@@ -13,10 +13,10 @@ player::~player() {}
 Vector2 player::GetPosition() { return position; }
 void player::SetPosition(Vector2 newPosition) { position = newPosition; }
 
-void player::ApplyVelocity(float minX, float maxX)
+void player::ApplyVelocity() 
 {
     position += velocity * GetFrameTime();
-    position.x = std::clamp(position.x, minX, maxX);
+    position.x = std::clamp(position.x, (float)limiteMapGacuhe + TAILLECHARACTER / 2, (float)limiteMapDroite - TAILLECHARACTER / 2);
 }
 
 Vector2 player::GetFuturePosition()
@@ -28,6 +28,10 @@ Vector2 player::GetVelocity() { return velocity; }
 void player::SetVelocity(Vector2 newVelocity) { velocity = newVelocity; }
 void player::ADDVelocity(Vector2 addedValue) { velocity += addedValue; }
 void player::SubtractVelocity(Vector2 subtrackValue) { velocity -= subtrackValue; }
+
+int player::GetLimiteMapGauche(){ return limiteMapGacuhe;}
+    int player::GetLimiteMapDroite(){ return limiteMapDroite;}
+    void player::SetLimiteMap(int limiteGauche, int limiteDroite){limiteMapDroite = limiteDroite; limiteMapGacuhe = limiteGauche;}
 
 
 player::State player::GetState() { return state; }

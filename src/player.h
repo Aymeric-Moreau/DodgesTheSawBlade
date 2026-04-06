@@ -18,6 +18,8 @@ private:
     Vector2 velocity;
     State state;
     Color COLOR = { 128, 0, 128, 255 };
+    int limiteMapGacuhe;
+    int limiteMapDroite;
 
 public:
     player(Vector2 SpawnPoint);
@@ -27,7 +29,7 @@ public:
 
     Vector2 GetPosition();
     void SetPosition(Vector2 newPosition);
-    void ApplyVelocity(float minX, float maxX);
+    void ApplyVelocity();
     Vector2 GetFuturePosition();
 
     Vector2 GetVelocity();
@@ -38,6 +40,10 @@ public:
     State GetState();
     void SetState(State newState);
     void SetStateIsGrounded(bool newState);
+
+    int GetLimiteMapGauche();
+    int GetLimiteMapDroite();
+    void SetLimiteMap(int limiteGauche, int limiteDroite);
 
     Color GetColor();
     void SetColor(Color newColor);

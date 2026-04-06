@@ -12,7 +12,8 @@ private:
 public:
     ennemis();
     ~ennemis();
-    void DrawEnnemis(float coX, float coY);
+    void SpawnEnnemis();
+    void DrawEnnemis();
 
     // --- Position ---
     Vector2 GetPosition();
@@ -21,6 +22,7 @@ public:
     // --- Velocity ---
     Vector2 GetVelocity();
     void SetVelocity(Vector2 newVelocity);
+    void ApplyVelocity();
 
     // --- Size ---
     float GetSize();

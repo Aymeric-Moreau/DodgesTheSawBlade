@@ -1,10 +1,10 @@
 #include "utils.h"
 #include "ennemis.h"
 
-void ennemis::DrawEnnemis(float coX, float coY)
+void ennemis::DrawEnnemis()
 {
-    SetPosition({coX,coY});
-    DrawCircle(coX, coY, size, color);
+
+    DrawCircle(position.x, position.y, size, color);
 }
 
 ennemis::ennemis()
@@ -22,6 +22,9 @@ void ennemis::SetPosition(Vector2 newPosition) { position = newPosition; }
 // --- Velocity ---
 Vector2 ennemis::GetVelocity() { return velocity; }
 void ennemis::SetVelocity(Vector2 newVelocity) { velocity = newVelocity; }
+void ennemis::ApplyVelocity(){
+    position += velocity * GetFrameTime();
+}
 
 // --- Size ---
 float ennemis::GetSize() { return size; }

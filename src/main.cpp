@@ -28,10 +28,12 @@ Vector2 gravity = {0,25};
 bool r;
 Camera2D camera;
 Rectangle ground = { -2500, 200, 5000, 10 }; //         DrawRectangle(-250, -1000, 500 , 1000 , WHITE);
-Rectangle area = { -250, -800, 500 , 1000  };
+Rectangle area = { -250, -800, 500 , 1000  }; // playerCharacter.ApplyVelocity(area.x + playerCharacter.TAILLECHARACTER / 2 , area.x + area.width - playerCharacter.TAILLECHARACTER / 2);
 
 ennemis test;
 
+int limiteMapGauche{area.x};
+int limiteMapDroite{area.x + area.width};
 
 float deltaTime;
 
@@ -46,8 +48,8 @@ int main()
 
     InitWindow(SCREENWIDTH, SCREENHEIGHT, "Raylib jeu de la vie");
     SetTargetFPS(60);
-    playerCharacter = player(SPAWNPOINT);
-
+    playerCharacter = player(SPAWNPOINT); // playerCharacter.ApplyVelocity(area.x + playerCharacter.TAILLECHARACTER / 2 , area.x + area.width - playerCharacter.TAILLECHARACTER / 2);
+    playerCharacter.SetLimiteMap(limiteMapGauche,limiteMapDroite);
     // Initialisation caméra
     camera.target = { playerCharacter.GetPosition().x, playerCharacter.GetPosition().y };
     camera.offset = { SCREENWIDTH / 2.0f, SCREENHEIGHT / 2.0f };
@@ -118,7 +120,7 @@ int main()
 
         }
         
-        playerCharacter.ApplyVelocity(area.x + playerCharacter.TAILLECHARACTER / 2 , area.x + area.width - playerCharacter.TAILLECHARACTER / 2);
+        playerCharacter.ApplyVelocity();
         // std::async(std::launch::async, CheckState);
         // DrawRectangle(-250, -1000, 500 , 1000 , WHITE);
         DrawRectangleRec(area, WHITE);
@@ -126,7 +128,7 @@ int main()
         
 
         DrawCircle(playerCharacter.GetPosition().x, playerCharacter.GetPosition().y, playerCharacter.TAILLECHARACTER, playerCharacter.GetColor());
-        test.DrawEnnemis(200,10);
+        test.DrawEnnemis();
         // DrawCircle(velocity.x, velocity.y, TAILLECHARACTER, CHARACTER);
 
 
