@@ -1,7 +1,6 @@
 #include "raylib.h"
 #include <string>
 #include <future>
-
 #include <algorithm>
 #include <cstdint>
 #include <iomanip>
@@ -9,7 +8,8 @@
 #include "player.h"
 #include "utils.h"
 #include "ennemis.h"
-
+#include <vector>
+#include <array>
 
 
 
@@ -19,8 +19,6 @@ constexpr int SCREENHEIGHT = 990;
 constexpr Vector2 SPAWNPOINT = {10 , 12};
 player playerCharacter(SPAWNPOINT);
 
-
-
 float speed = 500.5;
 Vector2 jumpSpeed = {0,-800}; 
 Vector2 gravity = {0,25};
@@ -28,16 +26,21 @@ Vector2 gravity = {0,25};
 bool r;
 Camera2D camera;
 Rectangle ground = { -2500, 200, 5000, 10 }; //         DrawRectangle(-250, -1000, 500 , 1000 , WHITE);
+Rectangle wallLeft = { 250, -2500, 10, 5000 };
+Rectangle wallRight = { -260, -2500, 10, 5000 };
 Rectangle area = { -250, -800, 500 , 1000  }; // playerCharacter.ApplyVelocity(area.x + playerCharacter.TAILLECHARACTER / 2 , area.x + area.width - playerCharacter.TAILLECHARACTER / 2);
+std::array<Rectangle, 3> limiteMap{ground,wallLeft,wallRight};
 
+
+
+std::vector<ennemis> listeEnnemis;
+std::vector<ennemis> closeEnnemis;
 ennemis test;
 
 int limiteMapGauche{area.x};
 int limiteMapDroite{area.x + area.width};
 
 float deltaTime;
-
-
 
 void applyGravity();
 void drawUI();
@@ -55,6 +58,8 @@ int main()
     camera.offset = { SCREENWIDTH / 2.0f, SCREENHEIGHT / 2.0f };
     camera.rotation = 0.0f;
     camera.zoom = 1.0f;
+    test.SetPosition({100 , 32});
+    listeEnnemis.push_back(test);
 
     while (!WindowShouldClose())
     {
@@ -99,7 +104,32 @@ int main()
 
         BeginMode2D(camera);
 
+        // for (auto &i : listeEnnemis)
+        // {
+        //     i.ApplyVelocity();
+        // }
+
+        for (size_t i = 0; i < listeEnnemis.size(); i++)
+        {
+            listeEnnemis[i].ApplyVelocity();
+for (size_t i = 0; i < limiteMap.size(); i++)
+{
+        if (CheckCollisionCircleRec(listeEnnemis[i].GetFuturePosition(), listeEnnemis[i].GetSize() + 1, limiteMap[i])) // si la prochaine pose n'overlap pas le rectagle
+        {
+
+            // von récup le millieu et on vérifie si il est pas exemple plus haut que le centre plus la longueur/2 voir si il est au dessu
+                
+        }
+}
+
+
         
+        }
+        
+        
+
+        
+        playerCharacter.ApplyVelocity();
 
         r = CheckCollisionCircleRec(playerCharacter.GetFuturePosition(), playerCharacter.TAILLECHARACTER + 1, ground);
         if (CheckCollisionCircleRec(playerCharacter.GetFuturePosition(), playerCharacter.TAILLECHARACTER + 1, ground)) // si la prochaine pose n'overlap pas le rectagle
@@ -120,15 +150,22 @@ int main()
 
         }
         
-        playerCharacter.ApplyVelocity();
+        
         // std::async(std::launch::async, CheckState);
         // DrawRectangle(-250, -1000, 500 , 1000 , WHITE);
         DrawRectangleRec(area, WHITE);
         DrawRectangleRec(ground, GREEN);
-        
+        DrawRectangleRec(wallLeft, ORANGE);
+        DrawRectangleRec(wallRight, PINK);
 
         DrawCircle(playerCharacter.GetPosition().x, playerCharacter.GetPosition().y, playerCharacter.TAILLECHARACTER, playerCharacter.GetColor());
-        test.DrawEnnemis();
+
+        for (size_t i = 0; i < listeEnnemis.size(); i++)
+        {
+            listeEnnemis[i].DrawEnnemis();
+        }
+
+        std::cout << "dans MAIN position x: " << test.GetPosition().x  << "position y: " << test.GetPosition().y << std::endl;
         // DrawCircle(velocity.x, velocity.y, TAILLECHARACTER, CHARACTER);
 
 
@@ -147,7 +184,12 @@ int main()
 
 
 void applyGravity(){
-    playerCharacter.ADDVelocity(gravity);
+    if (!playerCharacter.GetState().isGrounded)
+    {
+        playerCharacter.ADDVelocity(gravity);
+    }
+    
+    
 }
 
 

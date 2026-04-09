@@ -1,10 +1,13 @@
 #include "utils.h"
 #include "ennemis.h"
+#include <iostream>
+
 
 void ennemis::DrawEnnemis()
 {
 
     DrawCircle(position.x, position.y, size, color);
+    std::cout << "dans draw ennemis position x: " << position.x << "position y: " << position.y << std::endl;
 }
 
 ennemis::ennemis()
@@ -24,6 +27,13 @@ Vector2 ennemis::GetVelocity() { return velocity; }
 void ennemis::SetVelocity(Vector2 newVelocity) { velocity = newVelocity; }
 void ennemis::ApplyVelocity(){
     position += velocity * GetFrameTime();
+
+    std::cout << "position x: " << position.x << "position y: " << position.y << std::endl;
+}
+
+Vector2 ennemis::GetFuturePosition()
+{
+    return position + velocity * GetFrameTime();
 }
 
 // --- Size ---

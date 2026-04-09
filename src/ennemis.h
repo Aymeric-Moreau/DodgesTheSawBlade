@@ -5,8 +5,8 @@
 class ennemis
 {
 private:
-    Vector2 position = {10000 ,10000};
-    Vector2 velocity;
+    Vector2 position{10000 ,10000};
+    Vector2 velocity{-25,25};
     float size = 20;
     Color color = RED;
 public:
@@ -23,6 +23,7 @@ public:
     Vector2 GetVelocity();
     void SetVelocity(Vector2 newVelocity);
     void ApplyVelocity();
+    Vector2 GetFuturePosition();
 
     // --- Size ---
     float GetSize();
