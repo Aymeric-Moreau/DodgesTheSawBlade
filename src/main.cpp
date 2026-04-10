@@ -26,12 +26,16 @@ Vector2 gravity = {0,25};
 bool r;
 Camera2D camera;
 Rectangle ground = { -2500, 200, 5000, 10 }; //         DrawRectangle(-250, -1000, 500 , 1000 , WHITE);
-Rectangle wallLeft = { 250, -2500, 10, 5000 };
+Rectangle wallLeft = { 250, -2500, 10, 5000 }; // (int posX, int posY, int width, int height); 
+Rectangle testLeft = { 250, -250, 20, 20 };
+Rectangle test3Left = { 260, -240, 5, 5 };
+Rectangle test2Left = { 220, -270, 20, 20 };
 Rectangle wallRight = { -260, -2500, 10, 5000 };
 Rectangle area = { -250, -800, 500 , 1000  }; // playerCharacter.ApplyVelocity(area.x + playerCharacter.TAILLECHARACTER / 2 , area.x + area.width - playerCharacter.TAILLECHARACTER / 2);
+
 std::array<Rectangle, 3> limiteMap{ground,wallLeft,wallRight};
 
-
+Vector2 centerPointRec;
 
 std::vector<ennemis> listeEnnemis;
 std::vector<ennemis> closeEnnemis;
@@ -118,6 +122,9 @@ for (size_t i = 0; i < limiteMap.size(); i++)
         {
 
             // von récup le millieu et on vérifie si il est pas exemple plus haut que le centre plus la longueur/2 voir si il est au dessu
+            centerPointRec = GetCenterPoint(limiteMap[i]); // width = largeur / horizontal / X| heigh = hauter / vertical / Y
+                                                            // X moin = gauche | x plus = droite | y moin = haut | y plus = bas | (0, 0) = coin en haut à gauche
+                                                            
                 
         }
 }
@@ -157,6 +164,10 @@ for (size_t i = 0; i < limiteMap.size(); i++)
         DrawRectangleRec(ground, GREEN);
         DrawRectangleRec(wallLeft, ORANGE);
         DrawRectangleRec(wallRight, PINK);
+        DrawRectangleRec(testLeft, PURPLE); // test2Left
+        DrawRectangleRec(test2Left, YELLOW);// test3Left
+        DrawRectangleRec(test3Left, RED);
+        
 
         DrawCircle(playerCharacter.GetPosition().x, playerCharacter.GetPosition().y, playerCharacter.TAILLECHARACTER, playerCharacter.GetColor());
 
