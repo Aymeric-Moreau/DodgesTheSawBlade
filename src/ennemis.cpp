@@ -26,14 +26,14 @@ void ennemis::SetPosition(Vector2 newPosition) { position = newPosition; }
 Vector2 ennemis::GetVelocity() { return velocity; }
 void ennemis::SetVelocity(Vector2 newVelocity) { velocity = newVelocity; }
 void ennemis::ApplyVelocity(){
-    position += velocity * GetFrameTime();
+    position = Vector2Add(position, Vector2Scale(velocity, GetFrameTime()));
 
     std::cout << "position x: " << position.x << "position y: " << position.y << std::endl;
 }
 
 Vector2 ennemis::GetFuturePosition()
 {
-    return position + velocity * GetFrameTime();
+    return Vector2Add(position, Vector2Scale(velocity, GetFrameTime()));
 }
 
 // --- Size ---
@@ -43,3 +43,29 @@ void ennemis::SetSize(float newSize) { size = newSize; }
 // --- Color ---
 Color ennemis::GetColor() { return color; }
 void ennemis::SetColor(Color newColor) { color = newColor; }
+
+    direction ennemis::GetDir(){return dir;}
+    void ennemis::SetDir(direction newDir){dir = newDir;}
+
+    void ennemis::Rebond(direction newDir)
+    {
+        SetDir(newDir);
+        switch (newDir)
+        {
+        case direction::BasDroite:
+            SetVelocity(Vector2Multiply(Vector2Normalize(GetVelocity()), BASDROITE));
+            break;
+           case direction::BasGauche:
+            SetVelocity(Vector2Multiply(Vector2Normalize(GetVelocity()), BASGAUCHE));
+            break;
+           case direction::HautDroite:
+            SetVelocity(Vector2Multiply(Vector2Normalize(GetVelocity()), HAUTDROITE));
+            break;
+           case direction::HautFauche:
+            SetVelocity(Vector2Multiply(Vector2Normalize(GetVelocity()), HAUTGAUCHE));
+            break;
+        
+        default:
+            break;
+        }
+    }

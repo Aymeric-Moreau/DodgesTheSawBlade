@@ -44,7 +44,8 @@
             "name": "Linux",
             "includePath": [
                 "/home/linuxbrew/.linuxbrew/include",
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "C:/raylib/include"
             ],
             "defines": [
                 "_DEBUG",

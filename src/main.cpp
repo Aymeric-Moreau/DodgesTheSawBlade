@@ -11,8 +11,6 @@
 #include <vector>
 #include <array>
 
-
-
 constexpr Color BACKGROUND = DARKBLUE;
 constexpr int SCREENWIDTH = 1540;
 constexpr int SCREENHEIGHT = 990;
@@ -121,10 +119,61 @@ for (size_t i = 0; i < limiteMap.size(); i++)
         if (CheckCollisionCircleRec(listeEnnemis[i].GetFuturePosition(), listeEnnemis[i].GetSize() + 1, limiteMap[i])) // si la prochaine pose n'overlap pas le rectagle
         {
 
-            // von récup le millieu et on vérifie si il est pas exemple plus haut que le centre plus la longueur/2 voir si il est au dessu
+            // von récup le millieu du rectangle et on vérifie si il est pas exemple plus haut que le centre plus la longueur/2 voir si il est au dessu
             centerPointRec = GetCenterPoint(limiteMap[i]); // width = largeur / horizontal / X| heigh = hauter / vertical / Y
                                                             // X moin = gauche | x plus = droite | y moin = haut | y plus = bas | (0, 0) = coin en haut à gauche
-                                                            
+            centerPointRec.y + limiteMap[i].height/2; // face du dessou
+            centerPointRec.y - limiteMap[i].height/2; // face du dessu
+
+            centerPointRec.x + limiteMap[i].width/2; // face a droite
+            centerPointRec.x - limiteMap[i].width/2; // face a gauche
+
+            if (listeEnnemis[i].GetFuturePosition().y > centerPointRec.y + limiteMap[i].height/2) // il rebondi sur le dessus du rectangle
+            {
+                if (listeEnnemis[i].GetDir() == direction::BasDroite)
+                {
+                    listeEnnemis[i].Rebond(direction::HautDroite);
+                }
+                else if (listeEnnemis[i].GetDir() == direction::BasGauche)
+                {
+                    listeEnnemis[i].Rebond(direction::HautFauche);
+                }
+
+            }
+            else if (listeEnnemis[i].GetFuturePosition().y < centerPointRec.y - limiteMap[i].height/2)// il rebondi sur le dessous du rectangle
+            {
+                if (listeEnnemis[i].GetDir() == direction::HautDroite)
+                {
+                    listeEnnemis[i].Rebond(direction::BasDroite);
+                }
+                else if (listeEnnemis[i].GetDir() == direction::HautFauche)
+                {
+                    listeEnnemis[i].Rebond(direction::BasGauche);
+                }
+
+            }else if (listeEnnemis[i].GetFuturePosition().x > centerPointRec.x + limiteMap[i].width/2) // il rebondi sur le coté droit du rectangle
+            {
+                if (listeEnnemis[i].GetDir() == direction::BasGauche)
+                {
+                    listeEnnemis[i].Rebond(direction::BasDroite);
+                }
+                else if (listeEnnemis[i].GetDir() == direction::HautFauche)
+                {
+                    listeEnnemis[i].Rebond(direction::HautDroite);
+                }
+            }else if (listeEnnemis[i].GetFuturePosition().x < centerPointRec.x - limiteMap[i].width/2)// il rebondi sur le coté gauche du rectangle
+            {
+                if (listeEnnemis[i].GetDir() == direction::BasDroite)
+                {
+                    listeEnnemis[i].Rebond(direction::BasGauche);
+                }
+                else if (listeEnnemis[i].GetDir() == direction:: HautDroite)
+                {
+                    listeEnnemis[i].Rebond(direction::HautFauche);
+                }
+            }
+
+            
                 
         }
 }

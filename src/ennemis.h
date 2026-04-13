@@ -9,7 +9,9 @@ private:
     Vector2 velocity{-25,25};
     float size = 20;
     Color color = RED;
+    direction dir;
 public:
+
     ennemis();
     ~ennemis();
     void SpawnEnnemis();
@@ -32,4 +34,8 @@ public:
     // --- Color ---
     Color GetColor();
     void SetColor(Color newColor);
+
+    direction GetDir();
+    void SetDir(direction newDir);
+    void Rebond(direction newDir);
 };
