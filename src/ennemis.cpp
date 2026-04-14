@@ -7,7 +7,7 @@ void ennemis::DrawEnnemis()
 {
 
     DrawCircle(position.x, position.y, size, color);
-    std::cout << "dans draw ennemis position x: " << position.x << "position y: " << position.y << std::endl;
+    // std::cout << "dans draw ennemis position x: " << position.x << "position y: " << position.y << std::endl;
 }
 
 ennemis::ennemis()
@@ -28,7 +28,7 @@ void ennemis::SetVelocity(Vector2 newVelocity) { velocity = newVelocity; }
 void ennemis::ApplyVelocity(){
     position = Vector2Add(position, Vector2Scale(velocity, GetFrameTime()));
 
-    std::cout << "position x: " << position.x << "position y: " << position.y << std::endl;
+    // std::cout << "position x: " << position.x << "position y: " << position.y << std::endl;
 }
 
 Vector2 ennemis::GetFuturePosition()
@@ -53,16 +53,16 @@ void ennemis::SetColor(Color newColor) { color = newColor; }
         switch (newDir)
         {
         case direction::BasDroite:
-            SetVelocity(Vector2Multiply(Vector2Normalize(GetVelocity()), BASDROITE));
+            SetVelocity(Vector2Multiply(MakePositive(GetVelocity()), BASDROITE));
             break;
            case direction::BasGauche:
-            SetVelocity(Vector2Multiply(Vector2Normalize(GetVelocity()), BASGAUCHE));
+            SetVelocity(Vector2Multiply(MakePositive(GetVelocity()), BASGAUCHE));
             break;
            case direction::HautDroite:
-            SetVelocity(Vector2Multiply(Vector2Normalize(GetVelocity()), HAUTDROITE));
+            SetVelocity(Vector2Multiply(MakePositive(GetVelocity()), HAUTDROITE));
             break;
            case direction::HautFauche:
-            SetVelocity(Vector2Multiply(Vector2Normalize(GetVelocity()), HAUTGAUCHE));
+            SetVelocity(Vector2Multiply(MakePositive(GetVelocity()), HAUTGAUCHE));
             break;
         
         default:

@@ -6,12 +6,13 @@ class ennemis
 {
 private:
     Vector2 position{10000 ,10000};
-    Vector2 velocity{-25,25};
+    Vector2 velocity{50,50};
     float size = 20;
     Color color = RED;
-    direction dir;
+    direction dir = direction::BasDroite;
+    
 public:
-
+    Rectangle *dernierObstacleRebond;
     ennemis();
     ~ennemis();
     void SpawnEnnemis();
