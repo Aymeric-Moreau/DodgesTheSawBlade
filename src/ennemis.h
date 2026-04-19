@@ -6,7 +6,7 @@ class ennemis
 {
 private:
     Vector2 position{10000 ,10000};
-    Vector2 velocity{50,50};
+    Vector2 velocity{0,0};
     float size = 20;
     Color color = RED;
     direction dir = direction::BasDroite;
@@ -39,4 +39,6 @@ public:
     direction GetDir();
     void SetDir(direction newDir);
     void Rebond(direction newDir);
+
+    
 };

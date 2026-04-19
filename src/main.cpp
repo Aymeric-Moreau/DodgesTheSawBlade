@@ -1,21 +1,15 @@
 #include "raylib.h"
-#include <string>
-#include <future>
-#include <algorithm>
-#include <cstdint>
-#include <iomanip>
-#include <iostream>
 #include "player.h"
 #include "utils.h"
 #include "ennemis.h"
-#include <vector>
-#include <array>
+#include "spawner.h"
+
 
 constexpr Color BACKGROUND = DARKBLUE;
 constexpr int SCREENWIDTH = 1540;
 constexpr int SCREENHEIGHT = 990;
 constexpr Vector2 SPAWNPOINT = {10 , 12};
-player playerCharacter(SPAWNPOINT);
+player playerCharacter(SPAWNPOINT); // zone de spawn ennemis {250 , -550} {-260 , -550}
 
 float speed = 500.5;
 Vector2 jumpSpeed = {0,-800}; 
@@ -39,6 +33,7 @@ Vector2 centerPointRec;
 std::vector<ennemis> listeEnnemis;
 std::vector<ennemis> closeEnnemis;
 ennemis test;
+spawner spawnerPrincipal;
 
 int limiteMapGauche{area.x};
 int limiteMapDroite{area.x + area.width};
@@ -64,7 +59,10 @@ int main()
     camera.offset = { SCREENWIDTH / 2.0f, SCREENHEIGHT / 2.0f };
     camera.rotation = 0.0f;
     camera.zoom = 1.0f;
-    test.SetPosition({-100 , -100});
+    test.SetPosition({-100 , -550});
+    spawnerPrincipal = spawner();
+
+
     listeEnnemis.push_back(test);
 
     while (!WindowShouldClose())
@@ -104,16 +102,19 @@ int main()
 
         }
 
+        spawnerPrincipal.timer += deltaTime;
+
+if (spawnerPrincipal.timer >= spawnerPrincipal.delaySpawn) {
+    listeEnnemis.push_back(spawnerPrincipal.spawnEnnemy());
+    spawnerPrincipal.timer = 0;
+}
+
 
         BeginDrawing();
         ClearBackground(BACKGROUND);
 
         BeginMode2D(camera);
 
-        // for (auto &i : listeEnnemis)
-        // {
-        //     i.ApplyVelocity();
-        // }
 
         for (size_t i = 0; i < listeEnnemis.size(); i++)
         {
@@ -122,30 +123,31 @@ for (size_t y = 0; y < limiteMap.size(); y++)
 {
         if (CheckCollisionCircleRec(listeEnnemis[i].GetFuturePosition(), listeEnnemis[i].GetSize() + 1, *limiteMap[y]) && listeEnnemis[i].dernierObstacleRebond != limiteMap[y]) // si la prochaine pose n'overlap pas le rectagle
         {
-            if (limiteMap[y] == &ground)
-            {
-                std::cout << "overlap groud "  << std::endl;
-            }
-            if (limiteMap[y] == &wallLeft)
-            {
-                std::cout << "overlap wall left "  << std::endl;
-            }
-            if (limiteMap[y] == &wallRight)
-            {
-                std::cout << "overlap wall right "  << std::endl;
-            }
+            // if (limiteMap[y] == &ground)
+            // {
+            //     std::cout << "overlap groud "  << std::endl;
+            // }
+            // if (limiteMap[y] == &wallLeft)
+            // {
+            //     std::cout << "overlap wall left "  << std::endl;
+            // }
+            // if (limiteMap[y] == &wallRight)
+            // {
+            //     std::cout << "overlap wall right "  << std::endl;
+            // }
 
             listeEnnemis[i].dernierObstacleRebond = limiteMap[y];
             // von récup le millieu du rectangle et on vérifie si il est pas exemple plus haut que le centre plus la longueur/2 voir si il est au dessu
             centerPointRec = GetCenterPoint(*limiteMap[y]); 
-            // width = largeur / horizontal / X| heigh = hauter / vertical / Y
-            // X moin = gauche | x plus = droite | y moin = haut | y plus = bas | (0, 0) = coin en haut à gauche
-            // centerPointRec.y + limiteMap[i].height/2; // face du dessu
-            // centerPointRec.y - limiteMap[i].height/2; // face du dessou
+/**
+ *             width = largeur / horizontal / X| heigh = hauter / vertical / Y
+            X moin = gauche | x plus = droite | y moin = haut | y plus = bas | (0, 0) = coin en haut à gauche
+            centerPointRec.y + limiteMap[i].height/2; face du dessu
+            centerPointRec.y - limiteMap[i].height/2;  face du dessou
 
-            // centerPointRec.x + limiteMap[i].width/2; // face a droite
-            // centerPointRec.x - limiteMap[i].width/2; // face a gauche
-
+            centerPointRec.x + limiteMap[i].width/2; face a droite
+            centerPointRec.x - limiteMap[i].width/2; face a gauche
+ */
             if (listeEnnemis[i].GetFuturePosition().y > centerPointRec.y + (*limiteMap[y]).height/2) // il rebondi sur le dessous du rectangle
             {
                 std::cout << "il rebondi sur le dessoooous du rectangle "  << std::endl;
@@ -202,12 +204,7 @@ for (size_t y = 0; y < limiteMap.size(); y++)
         listeEnnemis[i].ApplyVelocity();
 }
 
-
-        
         }
-        
-        
-
         
         playerCharacter.ApplyVelocity();
 
@@ -249,6 +246,12 @@ for (size_t y = 0; y < limiteMap.size(); y++)
         for (size_t i = 0; i < listeEnnemis.size(); i++)
         {
             listeEnnemis[i].DrawEnnemis();
+           std::array<Vector2,8> r = octogone(listeEnnemis[i].GetPosition(),listeEnnemis[i].GetSize()).getOctogonePoints();
+           for (size_t w = 0; w < r.size(); w++)
+           {
+                DrawCircle(r[w].x,r[w].y, 5 , BLACK);
+           }
+           
         }
 
      
@@ -274,13 +277,11 @@ void applyGravity(){
     {
         playerCharacter.ADDVelocity(gravity);
     }
-    
-    
 }
 
 
 void drawUI(){
-    std::string coX = std::to_string(playerCharacter.GetPosition().x);
+        std::string coX = std::to_string(playerCharacter.GetPosition().x);
         std::string coY = std::to_string(playerCharacter.GetPosition().y);
         std::string veloX = std::to_string(playerCharacter.GetVelocity().x);
         std::string veloY = std::to_string(playerCharacter.GetVelocity().y);

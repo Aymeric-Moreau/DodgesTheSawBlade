@@ -45,12 +45,8 @@ Color ennemis::GetColor() { return color; }
 void ennemis::SetColor(Color newColor) { color = newColor; }
 
     direction ennemis::GetDir(){return dir;}
-    void ennemis::SetDir(direction newDir){dir = newDir;}
-
-    void ennemis::Rebond(direction newDir)
-    {
-        SetDir(newDir);
-        switch (newDir)
+    void ennemis::SetDir(direction newDir){dir = newDir;
+            switch (newDir)
         {
         case direction::BasDroite:
             SetVelocity(Vector2Multiply(MakePositive(GetVelocity()), BASDROITE));
@@ -67,5 +63,10 @@ void ennemis::SetColor(Color newColor) { color = newColor; }
         
         default:
             break;
-        }
+        }}
+
+    void ennemis::Rebond(direction newDir)
+    {
+        SetDir(newDir);
+
     }
