@@ -18,11 +18,11 @@ Vector2 gravity = {0,25};
 bool r;
 Camera2D camera;
 Rectangle ground = { -2500, 200, 5000, 10 }; //         DrawRectangle(-250, -1000, 500 , 1000 , WHITE);
-Rectangle wallLeft = { 250, -2500, 10, 5000 }; // (int posX, int posY, int width, int height); 
+Rectangle wallLeft = { 350, -2500, 100, 5000 }; // (int posX, int posY, int width, int height); 
 Rectangle testLeft = { 250, -250, 20, 20 };
 Rectangle test3Left = { 260, -240, 5, 5 };
 Rectangle test2Left = { 220, -270, 20, 20 };
-Rectangle wallRight = { -260, -2500, 10, 5000 };
+Rectangle wallRight = { -360, -2500, 100, 5000 };
 Rectangle area = { -250, -800, 500 , 1000  }; // playerCharacter.ApplyVelocity(area.x + playerCharacter.TAILLECHARACTER / 2 , area.x + area.width - playerCharacter.TAILLECHARACTER / 2);
 
 std::array<Rectangle*, 3> limiteMap{&ground,&wallLeft,&wallRight};
