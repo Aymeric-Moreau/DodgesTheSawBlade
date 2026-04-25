@@ -32,3 +32,15 @@
 Vector2 MakePositive(Vector2 v) {
     return { fabsf(v.x), fabsf(v.y) };
 }
+
+std::string DirToString(direction dir)
+{
+    switch (dir)
+    {
+        case BasDroite: return "BasDroite";
+        case BasGauche: return "BasGauche";
+        case HautDroite: return "HautDroite";
+        case HautFauche: return "HautGauche";
+        default: return "Unknown";
+    }
+}

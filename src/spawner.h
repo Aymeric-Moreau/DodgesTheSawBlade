@@ -10,8 +10,8 @@ private: //{250 , -550} {-260 , -550}
     Vector2 MinSpawnZone{130 , -550};
     Vector2 MaxSpawnZone{-160 , -550};
 std::vector<direction> directionPossible{BasDroite,BasGauche};
-    Vector2 minVelocity{25,25};
-    Vector2 maxVelocity{75,75};
+    Vector2 minVelocity{75,75};
+    Vector2 maxVelocity{105,105};
     ennemis ennemi;
 
     /* data */

@@ -1,5 +1,6 @@
 #pragma once
 #include "raylib.h"
+#include "obstacle.h"
 #include <algorithm>
 
 class ennemis
@@ -12,7 +13,8 @@ private:
     direction dir = direction::BasDroite;
     
 public:
-    Rectangle *dernierObstacleRebond;
+    obstacle *dernierObstacleRebond;
+    int nbrRebond{0};
     ennemis();
     ~ennemis();
     void SpawnEnnemis();

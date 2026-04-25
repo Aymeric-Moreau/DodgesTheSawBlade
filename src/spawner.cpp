@@ -26,8 +26,8 @@ spawner::~spawner()
     ennemis spawner::spawnEnnemy(){
         ennemi = ennemis();
         ennemi.SetPosition({(float)GetRandomValue((int)MinSpawnZone.x, (int)MaxSpawnZone.x) ,(float)GetRandomValue((int)MinSpawnZone.y, (int)MaxSpawnZone.y) });
-        ennemi.SetVelocity({(float)GetRandomValue((int)minVelocity.x, (int)minVelocity.x) ,(float)GetRandomValue((int)minVelocity.y, (int)minVelocity.y) });
-        ennemi.SetDir(directionPossible[GetRandomValue(0,directionPossible.size())]);
+        ennemi.SetVelocity({(float)GetRandomValue((int)minVelocity.x, (int)maxVelocity.x) ,(float)GetRandomValue((int)minVelocity.y, (int)maxVelocity.y) });
+        ennemi.SetDir(directionPossible[GetRandomValue(0,directionPossible.size()-1)]);
         return ennemi;
     }
     
