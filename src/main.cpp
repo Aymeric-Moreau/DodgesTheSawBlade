@@ -44,6 +44,9 @@ float deltaTime;
 
 void applyGravity();
 void drawUI();
+void ennemisUpdate();
+void playerInput();
+void DebugEnnemis(int i);
 Vector2 GetCenterPoint(const Rectangle &r);
 
 int main()
@@ -71,7 +74,98 @@ int main()
 
         applyGravity();
 
-        if (IsKeyDown(KEY_RIGHT))
+       playerInput();
+
+        spawnerPrincipal.timer += deltaTime;
+
+        if (spawnerPrincipal.timer >= spawnerPrincipal.delaySpawn)
+        {
+            listeEnnemis.push_back(spawnerPrincipal.spawnEnnemy());
+            spawnerPrincipal.timer = 0;
+        }
+
+        BeginDrawing();
+        ClearBackground(BACKGROUND);
+
+        BeginMode2D(camera);
+
+        ennemisUpdate();
+
+        playerCharacter.ApplyVelocity();
+
+        r = CheckCollisionCircleRec(playerCharacter.GetFuturePosition(), playerCharacter.TAILLECHARACTER + 1, ground);
+        if (CheckCollisionCircleRec(playerCharacter.GetFuturePosition(), playerCharacter.TAILLECHARACTER + 1, ground)) // si la prochaine pose n'overlap pas le rectagle
+        {
+
+            Vector2 v = playerCharacter.GetVelocity();
+            v.y = 0;
+            playerCharacter.SetVelocity(v);
+            playerCharacter.SetStateIsGrounded(true);
+        }
+        else
+        {
+            playerCharacter.SetStateIsGrounded(false);
+        }
+
+        if (CheckCollisionCircles(playerCharacter.GetFuturePosition(), playerCharacter.TAILLECHARACTER + 1, test.GetPosition(), test.GetSize()))
+        {
+            playerCharacter.Death();
+        }
+
+
+
+
+        // std::async(std::launch::async, CheckState);
+        // DrawRectangle(-250, -1000, 500 , 1000 , WHITE);
+        DrawRectangleRec(area, WHITE);
+        DrawRectangleRec(ground2.GetMain(), GREEN);
+        DrawRectangleRec(wallRight2.GetMain(), ORANGE);
+        DrawRectangleRec(wallLefts2.GetMain(), PINK);
+
+        for (size_t y = 0; y < limiteMap2.size(); y++)
+{
+    obstacle* obs = limiteMap2[y];
+
+    DrawRectangleRec(obs->GetHaut(), GREEN);
+    DrawRectangleRec(obs->GetBas(), YELLOW);
+    DrawRectangleRec(obs->GetGauche(), BLUE);
+    DrawRectangleRec(obs->GetDroite(), RED);
+}
+
+        DrawCircle(playerCharacter.GetPosition().x, playerCharacter.GetPosition().y, playerCharacter.TAILLECHARACTER, playerCharacter.GetColor());
+
+        for (size_t i = 0; i < listeEnnemis.size(); i++)
+        {
+            listeEnnemis[i].DrawEnnemis();
+
+            // listeEnnemis[i].dernierObstacleRebond == limiteMap[y]
+            DebugEnnemis(i);
+            
+        }
+
+        // DrawCircle(velocity.x, velocity.y, TAILLECHARACTER, CHARACTER);
+
+        EndMode2D();
+
+        drawUI();
+
+        EndDrawing();
+    }
+
+    CloseWindow();
+    return 0;
+}
+
+void applyGravity()
+{
+    if (!playerCharacter.GetState().isGrounded)
+    {
+        playerCharacter.ADDVelocity(gravity);
+    }
+}
+
+void playerInput(){
+     if (IsKeyDown(KEY_RIGHT))
         {
             Vector2 v = playerCharacter.GetVelocity();
             v.x = speed;
@@ -97,22 +191,17 @@ int main()
             v = jumpSpeed;
             playerCharacter.SetVelocity(v);
         }
+}
 
-        spawnerPrincipal.timer += deltaTime;
-
-        if (spawnerPrincipal.timer >= spawnerPrincipal.delaySpawn)
+void ennemisUpdate(){
+    for (size_t i = 0; i < listeEnnemis.size(); i++)
         {
-            listeEnnemis.push_back(spawnerPrincipal.spawnEnnemy());
-            spawnerPrincipal.timer = 0;
+
+       if (CheckCollisionCircles(playerCharacter.GetFuturePosition(), playerCharacter.TAILLECHARACTER + 1, listeEnnemis[i].GetPosition(), listeEnnemis[i].GetSize()))
+        {
+            playerCharacter.Death();
         }
 
-        BeginDrawing();
-        ClearBackground(BACKGROUND);
-
-        BeginMode2D(camera);
-
-        for (size_t i = 0; i < listeEnnemis.size(); i++)
-        {
 
             for (size_t y = 0; y < limiteMap2.size(); y++)
             {
@@ -220,54 +309,34 @@ int main()
             }
             listeEnnemis[i].ApplyVelocity();
         }
-
-        playerCharacter.ApplyVelocity();
-
-        r = CheckCollisionCircleRec(playerCharacter.GetFuturePosition(), playerCharacter.TAILLECHARACTER + 1, ground);
-        if (CheckCollisionCircleRec(playerCharacter.GetFuturePosition(), playerCharacter.TAILLECHARACTER + 1, ground)) // si la prochaine pose n'overlap pas le rectagle
-        {
-
-            Vector2 v = playerCharacter.GetVelocity();
-            v.y = 0;
-            playerCharacter.SetVelocity(v);
-            playerCharacter.SetStateIsGrounded(true);
-        }
-        else
-        {
-            playerCharacter.SetStateIsGrounded(false);
-        }
-
-        if (CheckCollisionCircles(playerCharacter.GetFuturePosition(), playerCharacter.TAILLECHARACTER + 1, test.GetPosition(), test.GetSize()))
-        {
-            playerCharacter.Death();
-        }
-
-        // std::async(std::launch::async, CheckState);
-        // DrawRectangle(-250, -1000, 500 , 1000 , WHITE);
-        DrawRectangleRec(area, WHITE);
-        DrawRectangleRec(ground2.GetMain(), GREEN);
-        DrawRectangleRec(wallRight2.GetMain(), ORANGE);
-        DrawRectangleRec(wallLefts2.GetMain(), PINK);
-
-        for (size_t y = 0; y < limiteMap2.size(); y++)
-{
-    obstacle* obs = limiteMap2[y];
-
-    DrawRectangleRec(obs->GetHaut(), GREEN);
-    DrawRectangleRec(obs->GetBas(), YELLOW);
-    DrawRectangleRec(obs->GetGauche(), BLUE);
-    DrawRectangleRec(obs->GetDroite(), RED);
 }
 
-        DrawCircle(playerCharacter.GetPosition().x, playerCharacter.GetPosition().y, playerCharacter.TAILLECHARACTER, playerCharacter.GetColor());
 
-        for (size_t i = 0; i < listeEnnemis.size(); i++)
-        {
-            listeEnnemis[i].DrawEnnemis();
+void drawUI()
+{
+    std::string coX = std::to_string(playerCharacter.GetPosition().x);
+    std::string coY = std::to_string(playerCharacter.GetPosition().y);
+    std::string veloX = std::to_string(playerCharacter.GetVelocity().x);
+    std::string veloY = std::to_string(playerCharacter.GetVelocity().y);
+    std::string fullTextCo = "Position : X  : " + coX + " Y : " + coY + " Veclocity : X : " + veloX + " Y : " + veloY;
 
-            // listeEnnemis[i].dernierObstacleRebond == limiteMap[y]
+    std::string GroundedStatus = playerCharacter.GetState().isGrounded ? "grounded" : "in air";
 
-            std::string dernierColStatu = listeEnnemis[i].dernierObstacleRebond == limiteMap2[2] ? " der : 2" : "der not = 2";
+    std::string overlapStatus = r ? "Overlap" : "not overlap";
+    std::string fullText = "Print  : " + overlapStatus + " grounded : " + GroundedStatus;
+
+    DrawText(fullText.c_str(), 10, 10, 30, RED);
+    DrawText(fullTextCo.c_str(), 10, 50, 10, YELLOW);
+}
+
+Vector2 GetCenterPoint(const Rectangle &r)
+{
+    return {r.x + r.width * 0.5f, r.y + r.height * 0.5f};
+}
+
+
+void DebugEnnemis(int i){
+    std::string dernierColStatu = listeEnnemis[i].dernierObstacleRebond == limiteMap2[2] ? " der : 2" : "der not = 2";
 
             Vector2 pos = listeEnnemis[i].GetPosition();
             Vector2 fpos = listeEnnemis[i].GetFuturePosition();
@@ -331,47 +400,4 @@ DrawText(debugCollision.c_str(), drawX, drawY + 72, 10, RED);
             {
                 DrawCircle(r[w].x, r[w].y, 5, BLACK);
             }
-        }
-
-        // DrawCircle(velocity.x, velocity.y, TAILLECHARACTER, CHARACTER);
-
-        EndMode2D();
-
-        drawUI();
-
-        EndDrawing();
-    }
-
-    CloseWindow();
-    return 0;
-}
-
-void applyGravity()
-{
-    if (!playerCharacter.GetState().isGrounded)
-    {
-        playerCharacter.ADDVelocity(gravity);
-    }
-}
-
-void drawUI()
-{
-    std::string coX = std::to_string(playerCharacter.GetPosition().x);
-    std::string coY = std::to_string(playerCharacter.GetPosition().y);
-    std::string veloX = std::to_string(playerCharacter.GetVelocity().x);
-    std::string veloY = std::to_string(playerCharacter.GetVelocity().y);
-    std::string fullTextCo = "Position : X  : " + coX + " Y : " + coY + " Veclocity : X : " + veloX + " Y : " + veloY;
-
-    std::string GroundedStatus = playerCharacter.GetState().isGrounded ? "grounded" : "in air";
-
-    std::string overlapStatus = r ? "Overlap" : "not overlap";
-    std::string fullText = "Print  : " + overlapStatus + " grounded : " + GroundedStatus;
-
-    DrawText(fullText.c_str(), 10, 10, 30, RED);
-    DrawText(fullTextCo.c_str(), 10, 50, 10, YELLOW);
-}
-
-Vector2 GetCenterPoint(const Rectangle &r)
-{
-    return {r.x + r.width * 0.5f, r.y + r.height * 0.5f};
 }
