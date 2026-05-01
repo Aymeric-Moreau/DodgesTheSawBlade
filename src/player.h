@@ -20,6 +20,8 @@ private:
     Color COLOR = { 128, 0, 128, 255 };
     int limiteMapGacuhe;
     int limiteMapDroite;
+    float speed = 500.5;
+    Vector2 jumpSpeed = {0, -800};
 
 public:
     player(Vector2 SpawnPoint);
@@ -34,6 +36,8 @@ public:
 
     Vector2 GetVelocity();
     void SetVelocity(Vector2 newVelocity);
+    void SetVelocityX(float newVeloX);
+    void SetVelocityY(float newVeloY);
     void ADDVelocity(Vector2 addedValue);
     void SubtractVelocity(Vector2 subtrackValue);
 
@@ -48,5 +52,7 @@ public:
     Color GetColor();
     void SetColor(Color newColor);
     void Death();
+
+    void checkPlayerController();
 };
 #endif

@@ -26,6 +26,8 @@ Vector2 player::GetFuturePosition()
 
 Vector2 player::GetVelocity() { return velocity; }
 void player::SetVelocity(Vector2 newVelocity) { velocity = newVelocity; }
+    void player::SetVelocityX(float newVeloX){velocity.x = newVeloX;}
+    void player::SetVelocityY(float newVeloY){velocity.y = newVeloY;}
 void player::ADDVelocity(Vector2 addedValue) { velocity = Vector2Add(velocity,addedValue); }
 void player::SubtractVelocity(Vector2 subtrackValue) { velocity -= subtrackValue; }
 
@@ -44,3 +46,32 @@ void player::SetColor(Color newColor) { COLOR = newColor;};
 void player::Death(){
     player::SetColor(BLACK);
 }
+
+void player::checkPlayerController(){
+    if (IsKeyDown(KEY_RIGHT))
+        {
+
+            SetVelocityX(speed);
+        }
+        else if (IsKeyDown(KEY_LEFT))
+        {
+
+            // ver 2
+            SetVelocityX(-speed);
+        }
+        else
+        {
+
+            SetVelocityX(0);
+        }
+
+        if (IsKeyDown(KEY_SPACE) && GetState().isGrounded) // il faut que ce soit une velociter constante pendant un certain temp
+        {
+
+            // Vector2 v = playerCharacter.GetVelocity();
+            // v = jumpSpeed;
+            SetVelocity(jumpSpeed);
+        }
+}
+
+

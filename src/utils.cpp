@@ -44,3 +44,8 @@ std::string DirToString(direction dir)
         default: return "Unknown";
     }
 }
+
+bool HasState(std::vector<gameState> vector ,gameState s)
+{
+    return std::find(vector.begin(), vector.end(), s) != vector.end();
+}

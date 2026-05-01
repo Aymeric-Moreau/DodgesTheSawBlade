@@ -59,6 +59,10 @@ octogone(Vector2 co, float radius)
 
     enum direction{BasDroite,BasGauche,HautDroite,HautFauche};
 
+    enum gameState{MainMenue,PauseMenue,InMainGame,GameOver};
+
+bool HasState( std::vector<gameState> vector ,gameState s );
+
 std::string DirToString(direction dir);
 // Vector2& operator+=(Vector2& a, const Vector2& b);
 // Vector2& operator-=(Vector2& a, const Vector2& b);
