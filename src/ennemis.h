@@ -42,5 +42,4 @@ public:
     void SetDir(direction newDir);
     void Rebond(direction newDir);
 
-    
 };

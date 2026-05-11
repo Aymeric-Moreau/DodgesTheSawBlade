@@ -1,0 +1,17 @@
+Class state
+void initState();
+void updateLogic();
+void updateDraw();
+
+
+class InMainGame : state
+
+// toutes le propiéter pour le gamepolay du main game
+
+//overide des focntion state avec la logic voulue
+override void initState();
+override void updateLogic();
+override void updateDraw();
+
+
+// et tu fais la même chose avec mainMenu pauseMenue gameOver

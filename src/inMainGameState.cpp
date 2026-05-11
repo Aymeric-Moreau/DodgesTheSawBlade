@@ -1,186 +1,42 @@
-#include "raylib.h"
-#include "player.h"
-#include "utils.h"
-#include "ennemis.h"
-#include "spawner.h"
-#include "obstacle.h"
-#include "bouton.h"
-#include "state.h"
+#include "inMainGameState.h"
 
-void startMainGame();
-void applyGravity();
-void drawUI();
-void ennemisUpdate();
-void playerInput();
-void debugEnnemis(int i);
-void spawnerManager();
-void playerUpdate();
-void drawMainGame();
-void testBouton();
-
-Color BACKGROUND = DARKBLUE;
-constexpr int SCREENWIDTH = 1540;
-constexpr int SCREENHEIGHT = 990;
-constexpr Vector2 SPAWNPOINT = {10, 12};
-player playerCharacter(SPAWNPOINT); // zone de spawn ennemis {250 , -550} {-260 , -550}
-
-float speed = 500.5;
-Vector2 jumpSpeed = {0, -800};
-Vector2 gravity = {0, 25};
-
-bool r;
-Camera2D camera;
-
-obstacle ground2 = obstacle({-2500, 200}, 5000, 100);
-obstacle wallRight2 = obstacle({350, -2500}, 100, 5000);
-obstacle wallLefts2 = obstacle({-360, -2500}, 100, 5000);
-
-Rectangle ground = {-2500, 200, 5000, 10};
-Rectangle wallRight = {350, -2500, 100, 5000};
-Rectangle wallLefts = {-360, -2500, 100, 5000};
-Rectangle area = {-350, -800, 800, 1000};
-Rectangle btn = {0, 0, 100, 100};
-bouton testbtn(btn, "c'est un test", testBouton);
-std::array<Rectangle *, 3> limiteMap{&ground, &wallRight, &wallLefts};
-std::array<obstacle *, 3> limiteMap2{&ground2, &wallRight2, &wallLefts2};
-
-Vector2 centerPointRec;
-
-std::vector<ennemis> listeEnnemis;
-std::vector<ennemis> closeEnnemis;
-ennemis test;
-spawner spawnerPrincipal;
-
-int limiteMapGauche{area.x};
-int limiteMapDroite{area.x + area.width};
-
-float deltaTime;
-
-Vector2 mousePos;
-
-// std::unique_ptr<> c'est une classe de pointeur intélligent 
-std::vector<std::unique_ptr<state>> activeLogicStates{gameState::InMainGame};
-std::vector<std::unique_ptr<state>> activeDrawStates{gameState::InMainGame}; // std::vector<std::unique_ptr<State>> states;
-std::vector<bouton> activeBouton{testbtn};
-bool stateEstinitialiser;
-
-
-Vector2 GetCenterPoint(const Rectangle &r);
-
-int main()
+inMainGameState::inMainGameState(/* args */)
 {
-
-    InitWindow(SCREENWIDTH, SCREENHEIGHT, "Dodge the SAWBLADE");
-    SetTargetFPS(60);
-    std::string fullTextCo2 = "Position : X  : ";
-    // testbtn = bouton(btn,fullTextCo2, testBouton() );
-
-    startMainGame();
-
-    while (!WindowShouldClose())
-    {
-
-        deltaTime = GetFrameTime();
-
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
-        {
-            mousePos = GetScreenToWorld2D(GetMousePosition(), camera);
-            for (size_t i = 0; i < activeBouton.size(); i++)
-            {
-                if (CheckCollisionPointRec(mousePos, activeBouton[i].getRectangle()))
-                {
-                    activeBouton[i].onClick();
-                }
-            }
-        }
-
-
-
-        // possibilité 2
-        for (size_t i = 0; i < activeLogicStates.size(); i++)
-        {
-            // switch (activeLogicStates[i])
-            // {
-
-            // case gameState::MainMenue:
-
-            //     break;
-
-            // case gameState::InMainGame:
-            //     applyGravity();
-            //     playerCharacter.checkPlayerController();
-            //     spawnerManager();
-            //     ennemisUpdate();
-            //     playerUpdate();
-            //     break;
-            // case gameState::PauseMenue:
-
-            //     break;
-            // case gameState::GameOver:
-
-            //     break;
-
-            // default:
-            //     break;
-            // }
-        }
-        // c'est l'un ou l'autre
-
-        BeginDrawing();
-        ClearBackground(BACKGROUND);
-        BeginMode2D(camera);
-
-        for (size_t i = 0; i < activeDrawStates.size(); i++)
-        {
-            // switch (activeDrawStates[i])
-            // {
-
-            // case gameState::MainMenue:
-
-            //     break;
-
-            // case gameState::InMainGame:
-            //     drawMainGame();
-            //     break;
-            // case gameState::PauseMenue:
-
-            //     break;
-            // case gameState::GameOver:
-
-            //     break;
-
-            // default:
-            //     break;
-            // }
-        }
-
-        DrawRectangleRec(btn, DARKGREEN);
-
-        EndMode2D();
-
-        drawUI();
-
-        EndDrawing();
-    }
-
-    CloseWindow();
-    return 0;
 }
 
-void startMainGame()
+inMainGameState::~inMainGameState()
+{
+}
+
+    void inMainGameState::initState(){
+        startMainGame();
+    }
+    void inMainGameState::updateLogic(){
+                        applyGravity();
+                playerCharacter.checkPlayerController();
+                spawnerManager();
+                ennemisUpdate();
+                playerUpdate();
+    }
+    void inMainGameState::updateDraw(){
+        drawMainGame();
+    }
+
+
+    void inMainGameState::startMainGame()
 {
     playerCharacter = player(SPAWNPOINT); // playerCharacter.ApplyVelocity(area.x + playerCharacter.TAILLECHARACTER / 2 , area.x + area.width - playerCharacter.TAILLECHARACTER / 2);
     playerCharacter.SetLimiteMap(limiteMapGauche, limiteMapDroite);
     // Initialisation caméra
     camera.target = {playerCharacter.GetPosition().x, playerCharacter.GetPosition().y};
-    camera.offset = {SCREENWIDTH / 2.0f, SCREENHEIGHT / 2.0f};
+    camera.offset = { gM.SCREENWIDTH / 2.0f, gM.SCREENHEIGHT / 2.0f};
     camera.rotation = 0.0f;
     camera.zoom = 1.0f;
     // test.SetPosition({-100, -550});
     spawnerPrincipal = spawner();
 }
 
-void applyGravity()
+void inMainGameState::applyGravity()
 {
     if (!playerCharacter.GetState().isGrounded)
     {
@@ -188,7 +44,7 @@ void applyGravity()
     }
 }
 
-void playerInput()
+void inMainGameState::playerInput()
 {
     if (IsKeyDown(KEY_RIGHT))
     {
@@ -218,7 +74,7 @@ void playerInput()
     }
 }
 
-void ennemisUpdate()
+void inMainGameState::ennemisUpdate()
 {
     for (size_t i = 0; i < listeEnnemis.size(); i++)
     {
@@ -336,7 +192,7 @@ void ennemisUpdate()
     }
 }
 
-void drawUI()
+void inMainGameState::drawUI()
 {
     std::string coX = std::to_string(playerCharacter.GetPosition().x);
     std::string coY = std::to_string(playerCharacter.GetPosition().y);
@@ -358,7 +214,7 @@ Vector2 GetCenterPoint(const Rectangle &r)
     return {r.x + r.width * 0.5f, r.y + r.height * 0.5f};
 }
 
-void debugEnnemis(int i)
+void inMainGameState::debugEnnemis(int i)
 {
 
     std::string dernierColStatu = listeEnnemis[i].dernierObstacleRebond == limiteMap2[2] ? " der : 2" : "der not = 2";
@@ -427,7 +283,7 @@ void debugEnnemis(int i)
     }
 }
 
-void spawnerManager()
+void inMainGameState::spawnerManager()
 {
 
     spawnerPrincipal.timer += deltaTime;
@@ -439,7 +295,7 @@ void spawnerManager()
     }
 }
 
-void playerUpdate()
+void inMainGameState::playerUpdate()
 {
     playerCharacter.ApplyVelocity();
 
@@ -463,7 +319,7 @@ void playerUpdate()
     }
 }
 
-void drawMainGame()
+void inMainGameState::drawMainGame()
 {
     // std::async(std::launch::async, CheckState);
     // DrawRectangle(-250, -1000, 500 , 1000 , WHITE);
@@ -494,10 +350,3 @@ void drawMainGame()
 
     // DrawCircle(velocity.x, velocity.y, TAILLECHARACTER, CHARACTER);
 }
-
-void testBouton()
-{
-    BACKGROUND = PINK;
-}
-
-//
