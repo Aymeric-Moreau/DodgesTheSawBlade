@@ -11,7 +11,7 @@
 
 #ifndef INMAINGAMESTATE
 
-class inMainGameState : state
+class inMainGameState : public state
 {
 private:
 const Vector2 SPAWNPOINT = {10, 12};
@@ -22,7 +22,7 @@ Vector2 jumpSpeed = {0, -800};
 Vector2 gravity = {0, 25};
 
 bool r;
-Camera2D camera;
+// Camera2D camera;
 
 obstacle ground2 = obstacle({-2500, 200}, 5000, 100);
 obstacle wallRight2 = obstacle({350, -2500}, 100, 5000);
@@ -67,6 +67,7 @@ void debugEnnemis(int i);
 void spawnerManager();
 void playerUpdate();
 void drawMainGame();
+Vector2 GetCenterPoint(const Rectangle &r);
 
 };
 

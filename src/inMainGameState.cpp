@@ -2,6 +2,7 @@
 
 inMainGameState::inMainGameState(/* args */)
 {
+    // isDisagreeOtherLogic = true;
 }
 
 inMainGameState::~inMainGameState()
@@ -12,6 +13,7 @@ inMainGameState::~inMainGameState()
         startMainGame();
     }
     void inMainGameState::updateLogic(){
+        std::cout << "update LOGIC IN STATE " << std::endl;
                         applyGravity();
                 playerCharacter.checkPlayerController();
                 spawnerManager();
@@ -20,18 +22,23 @@ inMainGameState::~inMainGameState()
     }
     void inMainGameState::updateDraw(){
         drawMainGame();
+        std::cout << "update DRAW IN STATE " << std::endl;
     }
 
+    Vector2 inMainGameState::GetCenterPoint(const Rectangle &r)
+{
+    return {r.x + r.width * 0.5f, r.y + r.height * 0.5f};
+}
 
     void inMainGameState::startMainGame()
 {
     playerCharacter = player(SPAWNPOINT); // playerCharacter.ApplyVelocity(area.x + playerCharacter.TAILLECHARACTER / 2 , area.x + area.width - playerCharacter.TAILLECHARACTER / 2);
     playerCharacter.SetLimiteMap(limiteMapGauche, limiteMapDroite);
     // Initialisation caméra
-    camera.target = {playerCharacter.GetPosition().x, playerCharacter.GetPosition().y};
-    camera.offset = { gM.SCREENWIDTH / 2.0f, gM.SCREENHEIGHT / 2.0f};
-    camera.rotation = 0.0f;
-    camera.zoom = 1.0f;
+    gM.camera.target = {playerCharacter.GetPosition().x, playerCharacter.GetPosition().y};
+    gM.camera.offset = { gM.SCREENWIDTH / 2.0f, gM.SCREENHEIGHT / 2.0f};
+    gM.camera.rotation = 0.0f;
+    gM.camera.zoom = 1.0f;
     // test.SetPosition({-100, -550});
     spawnerPrincipal = spawner();
 }
@@ -327,7 +334,7 @@ void inMainGameState::drawMainGame()
     DrawRectangleRec(ground2.GetMain(), GREEN);
     DrawRectangleRec(wallRight2.GetMain(), ORANGE);
     DrawRectangleRec(wallLefts2.GetMain(), PINK);
-
+std::cout << "update DRAW IN fonction STATE " << std::endl;
     for (size_t y = 0; y < limiteMap2.size(); y++)
     {
         obstacle *obs = limiteMap2[y];
