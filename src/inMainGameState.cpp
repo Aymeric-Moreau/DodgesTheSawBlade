@@ -10,10 +10,12 @@ inMainGameState::~inMainGameState()
 }
 
     void inMainGameState::initState(){
+        
+        AddActiveBouton(testbtn);
         startMainGame();
     }
     void inMainGameState::updateLogic(){
-        std::cout << "update LOGIC IN STATE " << std::endl;
+
                         applyGravity();
                 playerCharacter.checkPlayerController();
                 spawnerManager();
@@ -22,7 +24,12 @@ inMainGameState::~inMainGameState()
     }
     void inMainGameState::updateDraw(){
         drawMainGame();
-        std::cout << "update DRAW IN STATE " << std::endl;
+        for (auto &&i : activeBouton)
+        {
+            DrawRectangleRec(i.getRectangle(), DARKGREEN);
+        }
+        
+        
     }
 
     Vector2 inMainGameState::GetCenterPoint(const Rectangle &r)
@@ -293,10 +300,11 @@ void inMainGameState::debugEnnemis(int i)
 void inMainGameState::spawnerManager()
 {
 
-    spawnerPrincipal.timer += deltaTime;
-
+    spawnerPrincipal.timer += gM.deltaTime;
+// std::cout << " timer :" << spawnerPrincipal.timer <<"\n";
     if (spawnerPrincipal.timer >= spawnerPrincipal.delaySpawn)
     {
+        // std::cout << " spawn d'un ennemis\n";
         listeEnnemis.push_back(spawnerPrincipal.spawnEnnemy());
         spawnerPrincipal.timer = 0;
     }
@@ -323,6 +331,7 @@ void inMainGameState::playerUpdate()
     if (CheckCollisionCircles(playerCharacter.GetFuturePosition(), playerCharacter.TAILLECHARACTER + 1, test.GetPosition(), test.GetSize()))
     {
         playerCharacter.Death();
+        gM.replaceState(std::make_unique<mainMenuState>());
     }
 }
 
@@ -334,7 +343,7 @@ void inMainGameState::drawMainGame()
     DrawRectangleRec(ground2.GetMain(), GREEN);
     DrawRectangleRec(wallRight2.GetMain(), ORANGE);
     DrawRectangleRec(wallLefts2.GetMain(), PINK);
-std::cout << "update DRAW IN fonction STATE " << std::endl;
+// std::cout << "update DRAW IN fonction STATE " << std::endl;
     for (size_t y = 0; y < limiteMap2.size(); y++)
     {
         obstacle *obs = limiteMap2[y];
@@ -356,4 +365,9 @@ std::cout << "update DRAW IN fonction STATE " << std::endl;
     }
 
     // DrawCircle(velocity.x, velocity.y, TAILLECHARACTER, CHARACTER);
+}
+void inMainGameState::testBouton()
+{
+    std::cout << "exec fonction on click" << std::endl;
+    gM.BACKGROUND = PINK;
 }

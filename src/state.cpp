@@ -29,3 +29,21 @@ void state::SetIsDisagreeOtherDraw(bool value)
 {
     isDisagreeOtherDraw = value;
 }
+
+// GETTER
+std::vector<bouton> state::GetActiveBouton() const
+{
+    return activeBouton;
+}
+
+// SETTER
+void state::SetActiveBouton(std::vector<bouton> value)
+{
+    activeBouton = value;
+}
+
+// ADD
+void state::AddActiveBouton(bouton value)
+{
+    activeBouton.push_back(value);
+}

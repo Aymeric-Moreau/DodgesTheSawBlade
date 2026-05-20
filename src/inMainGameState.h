@@ -7,8 +7,8 @@
 #include "obstacle.h"
 #include "bouton.h"
 #include "state.h"
-#include "gameManager.h"
-
+#include "gameManager.h" 
+#include "mainMenuState.h" 
 #ifndef INMAINGAMESTATE
 
 class inMainGameState : public state
@@ -20,6 +20,10 @@ const Vector2 SPAWNPOINT = {10, 12};
 float speed = 500.5;
 Vector2 jumpSpeed = {0, -800};
 Vector2 gravity = {0, 25};
+Rectangle btn = {0, 0, 100, 100};
+
+
+bouton testbtn = bouton(btn, "c'est un test", testBouton);
 
 bool r;
 // Camera2D camera;
@@ -32,7 +36,7 @@ Rectangle ground = {-2500, 200, 5000, 10};
 Rectangle wallRight = {350, -2500, 100, 5000};
 Rectangle wallLefts = {-360, -2500, 100, 5000};
 Rectangle area = {-350, -800, 800, 1000};
-Rectangle btn = {0, 0, 100, 100};
+
 
 std::array<Rectangle *, 3> limiteMap{&ground, &wallRight, &wallLefts};
 std::array<obstacle *, 3> limiteMap2{&ground2, &wallRight2, &wallLefts2};
@@ -57,7 +61,7 @@ public:
     void initState();
     void updateLogic();
     void updateDraw();
-
+static void testBouton();
     void startMainGame();
 void applyGravity();
 void drawUI();

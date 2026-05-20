@@ -20,3 +20,12 @@ override void updateDraw();
 
 
 ta un state 
+
+Liste bouton ! 
+
+start game
+option 
+quit 
+pause 
+retry
+go to principal menu

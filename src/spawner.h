@@ -16,7 +16,7 @@ std::vector<direction> directionPossible{BasDroite,BasGauche};
 
     /* data */
 public:
-float timer;
+float timer{0};
 float delaySpawn{2};
     spawner(/* args */);
     ~spawner();

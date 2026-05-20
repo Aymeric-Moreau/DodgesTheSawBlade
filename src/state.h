@@ -1,6 +1,7 @@
 #pragma once
 #include "raylib.h"
 #include "utils.h"
+#include "bouton.h"
 
 #ifndef STATE
 
@@ -9,6 +10,7 @@ class state
 protected:
     bool isDisagreeOtherLogic = false;
     bool isDisagreeOtherDraw = false;
+    std::vector<bouton> activeBouton;
 private:
 
 public:
@@ -22,6 +24,14 @@ public:
 
    virtual bool GetIsDisagreeOtherDraw() const;
    virtual void SetIsDisagreeOtherDraw(bool value);
+      // GETTER
+    virtual std::vector<bouton> GetActiveBouton() const;
+
+    // SETTER
+    virtual void SetActiveBouton(std::vector<bouton> value);
+
+    // ADD
+    virtual void AddActiveBouton(bouton value);
 };
 
 #endif

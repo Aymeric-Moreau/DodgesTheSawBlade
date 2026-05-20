@@ -6,11 +6,12 @@
 #include "obstacle.h"
 #include "bouton.h"
 #include "state.h"
+#include "mainMenuState.h"
 #include "inMainGameState.h"
 
 
-void testBouton();
-void addState(std::unique_ptr<state> newState);
+
+// void addState(std::unique_ptr<state> newState);
 
 Color BACKGROUND = DARKBLUE;
 constexpr int SCREENWIDTH = 1540;
@@ -33,8 +34,8 @@ Rectangle ground = {-2500, 200, 5000, 10};
 Rectangle wallRight = {350, -2500, 100, 5000};
 Rectangle wallLefts = {-360, -2500, 100, 5000};
 Rectangle area = {-350, -800, 800, 1000};
-Rectangle btn = {0, 0, 100, 100};
-bouton testbtn(btn, "c'est un test", testBouton);
+
+
 std::array<Rectangle *, 3> limiteMap{&ground, &wallRight, &wallLefts};
 std::array<obstacle *, 3> limiteMap2{&ground2, &wallRight2, &wallLefts2};
 
@@ -58,9 +59,9 @@ std::vector<std::unique_ptr<state>> activeStates;
 
 std::vector<std::unique_ptr<state>> activeLogicStates{gameState::InMainGame};
 std::vector<std::unique_ptr<state>> activeDrawStates{gameState::InMainGame}; // std::vector<std::unique_ptr<State>> states;
-std::vector<bouton> activeBouton{testbtn};
-bool stateEstinitialiser;
-
+// std::vector<bouton> activeBouton{testbtn};
+// bool stateEstinitialiser;
+bool haveclick = false;
 
 Vector2 GetCenterPoint(const Rectangle &r);
 
@@ -69,35 +70,44 @@ int main()
 
     InitWindow(SCREENWIDTH, SCREENHEIGHT, "Dodge the SAWBLADE");
     SetTargetFPS(60);
+    // gM.activeBouton.push_back(testbtn);
     std::string fullTextCo2 = "Position : X  : ";
     // testbtn = bouton(btn,fullTextCo2, testBouton() );
 
-    addState(std::make_unique<inMainGameState>());
+    gM.addState(std::make_unique<mainMenuState>());
     // startMainGame();
 
     while (!WindowShouldClose())
     {
 
-        deltaTime = GetFrameTime();
+        gM.deltaTime = GetFrameTime();
 
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+
+
+for (size_t i = 0; i < gM.activeStates.size(); i++)
         {
-            mousePos = GetScreenToWorld2D(GetMousePosition(), gM.camera);
-            for (size_t i = 0; i < activeBouton.size(); i++)
+            if (i == 0 || !gM.activeStates[i -1]->GetIsDisagreeOtherLogic())
             {
-                if (CheckCollisionPointRec(mousePos, activeBouton[i].getRectangle()))
+
+                gM.activeStates[i]->updateLogic();
+
+          if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !haveclick)
+        {
+            haveclick = true;
+            mousePos = GetScreenToWorld2D(GetMousePosition(), gM.camera);
+            for (size_t y = 0; y < gM.activeStates[i]->GetActiveBouton().size(); y++)
+            {
+                if (CheckCollisionPointRec(mousePos, gM.activeStates[i]->GetActiveBouton()[y].getRectangle()))
                 {
-                    activeBouton[i].onClick();
+                    gM.activeStates[i]->GetActiveBouton()[y].onClick();
+                    std::cout << "click bouton" << std::endl;
                 }
             }
         }
-
-for (size_t i = 0; i < activeStates.size(); i++)
-        {
-            if (i == 0 || !activeStates[i -1]->GetIsDisagreeOtherLogic())
-            {
-                std::cout << "update LOGIC " << std::endl;
-                activeStates[i]->updateLogic();
+        if (IsMouseButtonUp(MOUSE_BUTTON_LEFT) && haveclick){
+            haveclick = false;
+        }
+                gM.activeStates[i]->GetActiveBouton();
             }
         }
 
@@ -105,22 +115,22 @@ for (size_t i = 0; i < activeStates.size(); i++)
 
 
         BeginDrawing();
-        ClearBackground(BACKGROUND);
+        ClearBackground(gM.BACKGROUND);
         BeginMode2D(gM.camera);
 
-        for (size_t i = 0; i < activeStates.size(); i++)
+        for (size_t i = 0; i < gM.activeStates.size(); i++)
         {
-            if (i == 0 ||!activeStates[i -1]->GetIsDisagreeOtherDraw())
+            if (i == 0 ||!gM.activeStates[i -1]->GetIsDisagreeOtherDraw())
             {
-                std::cout << "update draw " << std::endl;
-                activeStates[i]->updateDraw();
+
+                gM.activeStates[i]->updateDraw();
             }
             
             
         }
 
 
-        DrawRectangleRec(btn, DARKGREEN);
+        // DrawRectangleRec(btn, DARKGREEN);
 
         EndMode2D();
 
@@ -133,15 +143,12 @@ for (size_t i = 0; i < activeStates.size(); i++)
     return 0;
 }
 
-void addState(std::unique_ptr<state> newState){
-    // activeStates.push_back(std::make_unique<inMainGameState>());
-    activeStates.insert(activeStates.begin(), std::move(newState));
-    activeStates[0]->initState();
-}
+// void addState(std::unique_ptr<state> newState){
+//     // activeStates.push_back(std::make_unique<inMainGameState>());
+//     activeStates.insert(activeStates.begin(), std::move(newState));
+//     activeStates[0]->initState();
+// }
 
-void testBouton()
-{
-    BACKGROUND = PINK;
-}
+
 
 //
