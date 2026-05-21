@@ -9,6 +9,7 @@ mainMenuState::~mainMenuState()
 }
 
     void mainMenuState::initState(){
+        std::cout << " init main menue state\n";
         AddActiveBouton(playBtn);
             gM.camera.target = {10, 12};
     gM.camera.offset = { gM.SCREENWIDTH / 2.0f, gM.SCREENHEIGHT / 2.0f};
@@ -21,7 +22,8 @@ mainMenuState::~mainMenuState()
     }
     void mainMenuState::updateDraw(){
 
-        DrawRectangleRec(recPlayBtn,LIGHTGRAY);
+        playBtn.drawButton();
+        // DrawRectangleRec(recPlayBtn,LIGHTGRAY);
     }
 
      void mainMenuState::startGame(){

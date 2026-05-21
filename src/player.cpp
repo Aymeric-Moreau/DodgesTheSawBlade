@@ -44,7 +44,18 @@ Color player::GetColor() { return COLOR; }
 void player::SetColor(Color newColor) { COLOR = newColor;};
 
 void player::Death(){
-    player::SetColor(BLACK);
+    if (alive)
+    {
+        player::SetColor(BLACK);
+        alive = false;
+    }
+    
+    
+
+}
+
+bool player::GetAlive(){
+    return alive;
 }
 
 void player::checkPlayerController(){

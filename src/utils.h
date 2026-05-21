@@ -70,5 +70,5 @@ std::string DirToString(direction dir);
 // Vector2 operator*(Vector2 a, const float b);
 Vector2 MakePositive(Vector2 v);
 
-
+Vector2 GetCenterPoint(const Rectangle &r);
 

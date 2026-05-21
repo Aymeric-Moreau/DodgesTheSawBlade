@@ -32,10 +32,10 @@ inMainGameState::~inMainGameState()
         
     }
 
-    Vector2 inMainGameState::GetCenterPoint(const Rectangle &r)
-{
-    return {r.x + r.width * 0.5f, r.y + r.height * 0.5f};
-}
+//     Vector2 inMainGameState::GetCenterPoint(const Rectangle &r)
+// {
+//     return {r.x + r.width * 0.5f, r.y + r.height * 0.5f};
+// }
 
     void inMainGameState::startMainGame()
 {
@@ -95,11 +95,19 @@ void inMainGameState::ennemisUpdate()
 
         if (CheckCollisionCircles(playerCharacter.GetFuturePosition(), playerCharacter.TAILLECHARACTER + 1, listeEnnemis[i].GetPosition(), listeEnnemis[i].GetSize()))
         {
+            if (playerCharacter.GetAlive())
+        {
             playerCharacter.Death();
+            // gM.replaceState(std::make_unique<mainMenuState>());
+            gM.haveToChangeState = true;
+            gM.StateSuivant = std::make_unique<mainMenuState>();
+        }
+            
         }
 
         for (size_t y = 0; y < limiteMap2.size(); y++)
         {
+            std::cout << " check col obstacle avec mur \n";
             bool collisionNow = CheckCollisionCircleRec(
                 listeEnnemis[i].GetPosition(),
                 listeEnnemis[i].GetSize() + 1,
@@ -223,10 +231,7 @@ void inMainGameState::drawUI()
     DrawText(fullTextCo.c_str(), 10, 50, 10, YELLOW);
 }
 
-Vector2 GetCenterPoint(const Rectangle &r)
-{
-    return {r.x + r.width * 0.5f, r.y + r.height * 0.5f};
-}
+
 
 void inMainGameState::debugEnnemis(int i)
 {
@@ -328,11 +333,7 @@ void inMainGameState::playerUpdate()
         playerCharacter.SetStateIsGrounded(false);
     }
 
-    if (CheckCollisionCircles(playerCharacter.GetFuturePosition(), playerCharacter.TAILLECHARACTER + 1, test.GetPosition(), test.GetSize()))
-    {
-        playerCharacter.Death();
-        gM.replaceState(std::make_unique<mainMenuState>());
-    }
+
 }
 
 void inMainGameState::drawMainGame()

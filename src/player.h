@@ -22,6 +22,7 @@ private:
     int limiteMapDroite;
     float speed = 500.5;
     Vector2 jumpSpeed = {0, -800};
+    bool alive = true;
 
 public:
     player(Vector2 SpawnPoint);
@@ -33,6 +34,8 @@ public:
     void SetPosition(Vector2 newPosition);
     void ApplyVelocity();
     Vector2 GetFuturePosition();
+
+    bool GetAlive();
 
     Vector2 GetVelocity();
     void SetVelocity(Vector2 newVelocity);

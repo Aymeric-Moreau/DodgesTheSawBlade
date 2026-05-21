@@ -49,3 +49,8 @@ bool HasState(std::vector<gameState> vector ,gameState s)
 {
     return std::find(vector.begin(), vector.end(), s) != vector.end();
 }
+
+Vector2 GetCenterPoint(const Rectangle &r)
+{
+    return {r.x + r.width * 0.5f, r.y + r.height * 0.5f};
+}

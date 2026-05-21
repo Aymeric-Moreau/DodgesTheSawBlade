@@ -71,7 +71,7 @@ void debugEnnemis(int i);
 void spawnerManager();
 void playerUpdate();
 void drawMainGame();
-Vector2 GetCenterPoint(const Rectangle &r);
+// Vector2 GetCenterPoint(const Rectangle &r);
 
 };
 

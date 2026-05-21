@@ -8,6 +8,7 @@ class bouton
 private:
     Rectangle btn;
     std::string titre;
+    Color color = YELLOW;
     
     /* data */
 public:
@@ -22,6 +23,8 @@ void (*onClick)();
     // Setters
     void setRectangle(const Rectangle& rec);
     void setTitre(const std::string& t);
+
+    void drawButton();
 // state(void (*initFunc)(),void (*logicFunc)(), void (*drawFunc)());
 
 

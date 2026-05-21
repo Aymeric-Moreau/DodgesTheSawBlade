@@ -33,3 +33,10 @@ void bouton::setTitre(const std::string& t)
 {
     titre = t;
 }
+
+void bouton::drawButton(){
+
+    DrawRectangleRec(btn,color);
+    DrawText(titre.c_str(),GetCenterPoint(btn).x,GetCenterPoint(btn).y,10,BLACK);
+    // GetCenterPoint(btn);
+}

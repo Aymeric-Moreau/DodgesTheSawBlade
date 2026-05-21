@@ -15,7 +15,7 @@ private:
 
 public:
     state(/* args */);
-    ~state();
+    virtual ~state() = default;
     virtual void initState(){}
     virtual void updateLogic(){}
     virtual void updateDraw(){}

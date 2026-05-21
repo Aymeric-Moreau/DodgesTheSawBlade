@@ -79,12 +79,19 @@ int main()
 
     while (!WindowShouldClose())
     {
+        if (gM.haveToChangeState)
+        {
+            gM.replaceState(std::move(gM.StateSuivant));
+            gM.haveToChangeState = false;
+        }
+        
 
         gM.deltaTime = GetFrameTime();
 
+if (gM.stateActive)
+        {
 
-
-for (size_t i = 0; i < gM.activeStates.size(); i++)
+            for (size_t i = 0; i < gM.activeStates.size(); i++)
         {
             if (i == 0 || !gM.activeStates[i -1]->GetIsDisagreeOtherLogic())
             {
@@ -111,14 +118,19 @@ for (size_t i = 0; i < gM.activeStates.size(); i++)
             }
         }
 
+        }
+
+
+
 
 
 
         BeginDrawing();
         ClearBackground(gM.BACKGROUND);
         BeginMode2D(gM.camera);
-
-        for (size_t i = 0; i < gM.activeStates.size(); i++)
+        if (gM.stateActive)
+        {
+                    for (size_t i = 0; i < gM.activeStates.size(); i++)
         {
             if (i == 0 ||!gM.activeStates[i -1]->GetIsDisagreeOtherDraw())
             {
@@ -128,6 +140,10 @@ for (size_t i = 0; i < gM.activeStates.size(); i++)
             
             
         }
+        }
+        
+
+
 
 
         // DrawRectangleRec(btn, DARKGREEN);

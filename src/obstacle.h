@@ -18,7 +18,7 @@ public:
     ~obstacle() = default;
 
     // getters utiles pour debug / collisions
-    Rectangle GetMain() const { return mainRec; }
+    Rectangle GetMain() const {  return mainRec; }
     Rectangle GetDroite() const { return droiteRec; }
     Rectangle GetGauche() const { return gaucheRec; }
     Rectangle GetBas() const { return basRec; }

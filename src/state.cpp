@@ -6,9 +6,9 @@ state::state(/* args */)
 {
 }
 
-state::~state()
-{
-}
+// state::~state()
+// {
+// }
 
 bool state::GetIsDisagreeOtherLogic() const
 {
