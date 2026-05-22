@@ -1,14 +1,16 @@
 #pragma once
 #include "raylib.h"
-#include "player.h"
-#include "utils.h"
-#include "ennemis.h"
-#include "spawner.h"
-#include "obstacle.h"
-#include "bouton.h"
+#include "../player.h"
+#include "../utils.h"
+#include "../ennemis.h"
+#include "../spawner.h"
+#include "../obstacle.h"
+#include "../bouton.h"
 #include "state.h"
-#include "gameManager.h" 
-#include "mainMenuState.h" 
+#include "../gameManager.h" 
+#include "mainMenuState.h"  // pauseMenuState gameOverState
+#include "pauseMenuState.h"
+#include "gameOverState.h"
 #ifndef INMAINGAMESTATE
 
 class inMainGameState : public state
@@ -23,7 +25,7 @@ Vector2 gravity = {0, 25};
 Rectangle btn = {0, 0, 100, 100};
 
 
-bouton testbtn = bouton(btn, "c'est un test", testBouton);
+bouton testbtn = bouton(btn, "c'est un test", testBouton,RED);
 
 bool r;
 // Camera2D camera;

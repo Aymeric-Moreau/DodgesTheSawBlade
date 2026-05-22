@@ -1,7 +1,7 @@
 #pragma once
 #include "raylib.h"
-#include "utils.h"
-#include "bouton.h"
+#include "../utils.h"
+#include "../bouton.h"
 
 #ifndef STATE
 

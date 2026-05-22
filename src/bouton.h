@@ -13,7 +13,7 @@ private:
     /* data */
 public:
 void (*onClick)();
-    bouton(Rectangle rec,std::string t, void (*func)());
+    bouton(Rectangle rec,std::string t, void (*func)(), Color c);
     ~bouton();
 
         // Getters

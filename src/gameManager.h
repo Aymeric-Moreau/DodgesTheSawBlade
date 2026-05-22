@@ -1,7 +1,7 @@
 #pragma once
 #include "raylib.h"
 #include "utils.h"
-#include "state.h"
+#include "state/state.h"
 
 
 // Globals.h
@@ -17,9 +17,27 @@ bool stateActive;
 bool haveToChangeState = false;
 std::unique_ptr<state> StateSuivant = nullptr;
 std::vector<std::unique_ptr<state>> activeStates;
+float playerTimer = 0;
+
+
 void addState(std::unique_ptr<state> newState);
 void replaceState(std::unique_ptr<state> newState);
-};
 
+
+   template <typename T>
+    void suppState()
+    {
+        for (size_t i = 0; i < activeStates.size(); i++)
+        {
+            if (dynamic_cast<T*>(activeStates[i].get()))
+            {
+                activeStates.erase(activeStates.begin() + i);
+                return;
+            }
+        }
+    }
+
+};
+void suppState();
 // void addState(std::unique_ptr<state> newState);
 extern gameManager gM;

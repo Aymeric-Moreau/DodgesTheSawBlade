@@ -48,6 +48,7 @@ inMainGameState::~inMainGameState()
     gM.camera.zoom = 1.0f;
     // test.SetPosition({-100, -550});
     spawnerPrincipal = spawner();
+    gM.playerTimer = 0;
 }
 
 void inMainGameState::applyGravity()
@@ -100,7 +101,7 @@ void inMainGameState::ennemisUpdate()
             playerCharacter.Death();
             // gM.replaceState(std::make_unique<mainMenuState>());
             gM.haveToChangeState = true;
-            gM.StateSuivant = std::make_unique<mainMenuState>();
+            gM.StateSuivant = std::make_unique<gameOverState>();
         }
             
         }
@@ -318,6 +319,7 @@ void inMainGameState::spawnerManager()
 void inMainGameState::playerUpdate()
 {
     playerCharacter.ApplyVelocity();
+    gM.playerTimer += GetFrameTime();
 
     r = CheckCollisionCircleRec(playerCharacter.GetFuturePosition(), playerCharacter.TAILLECHARACTER + 1, ground);
     if (CheckCollisionCircleRec(playerCharacter.GetFuturePosition(), playerCharacter.TAILLECHARACTER + 1, ground)) // si la prochaine pose n'overlap pas le rectagle
@@ -365,10 +367,13 @@ void inMainGameState::drawMainGame()
         debugEnnemis(i);
     }
 
+    DrawText( std::to_string(gM.playerTimer).c_str(),0,300,30,BLACK);
+
     // DrawCircle(velocity.x, velocity.y, TAILLECHARACTER, CHARACTER);
 }
 void inMainGameState::testBouton()
 {
     std::cout << "exec fonction on click" << std::endl;
     gM.BACKGROUND = PINK;
+    gM.addState(std::make_unique<pauseMenuState>());
 }

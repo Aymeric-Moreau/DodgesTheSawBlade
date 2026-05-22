@@ -1,10 +1,11 @@
 #include "bouton.h"
 
-bouton::bouton(Rectangle rec,std::string t, void (*func)())
+bouton::bouton(Rectangle rec,std::string t, void (*func)(), Color c)
 {
     btn = rec;
     titre = t;
     onClick = func;
+    color = c;
 }
 
 bouton::~bouton()

@@ -5,9 +5,9 @@
 #include "spawner.h"
 #include "obstacle.h"
 #include "bouton.h"
-#include "state.h"
-#include "mainMenuState.h"
-#include "inMainGameState.h"
+#include "state/state.h"
+#include "state/mainMenuState.h"
+#include "state/inMainGameState.h"
 
 
 
@@ -130,16 +130,13 @@ if (gM.stateActive)
         BeginMode2D(gM.camera);
         if (gM.stateActive)
         {
-                    for (size_t i = 0; i < gM.activeStates.size(); i++)
-        {
-            if (i == 0 ||!gM.activeStates[i -1]->GetIsDisagreeOtherDraw())
-            {
-
-                gM.activeStates[i]->updateDraw();
-            }
-            
-            
-        }
+for (int i = (int)gM.activeStates.size() - 1; i >= 0; i--)
+{
+    if (i == 0 || !gM.activeStates[i - 1]->GetIsDisagreeOtherDraw())
+    {
+        gM.activeStates[i]->updateDraw();
+    }
+}
         }
         
 

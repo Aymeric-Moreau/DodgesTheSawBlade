@@ -37,4 +37,15 @@ void gameManager::replaceState(std::unique_ptr<state> newState){
     }
     stateActive = true;
 }
-
+// template <typename T>
+// void suppState()
+// {
+//     for (size_t i = 0; i < gM.activeStates.size(); i++)
+//     {
+//         if (dynamic_cast<T*>(gM.activeStates[i].get()))
+//         {
+//             gM.activeStates.erase(gM.activeStates.begin() + i);
+//             return;
+//         }
+//     }
+// }
