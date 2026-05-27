@@ -15,6 +15,7 @@ private:
 public:
     obstacle *dernierObstacleRebond;
     int nbrRebond{0};
+    bool isDefeat = false;
     ennemis();
     ~ennemis();
     void SpawnEnnemis();

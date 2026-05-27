@@ -49,6 +49,7 @@ inMainGameState::~inMainGameState()
     // test.SetPosition({-100, -550});
     spawnerPrincipal = spawner();
     gM.playerTimer = 0;
+    gM.coins = 0;
 }
 
 void inMainGameState::applyGravity()
@@ -93,6 +94,17 @@ void inMainGameState::ennemisUpdate()
 {
     for (size_t i = 0; i < listeEnnemis.size(); i++)
     {
+        if (
+    playerCharacter.GetFuturePosition().x >= listeEnnemis[i].GetPosition().x - 10 &&
+    playerCharacter.GetFuturePosition().x <= listeEnnemis[i].GetPosition().x + 10 &&
+    playerCharacter.GetFuturePosition().y < listeEnnemis[i].GetPosition().y
+)
+        {
+            listeEnnemis[i].isDefeat = true;
+            // listeEnnemis.erase(listeEnnemis.begin()+i);
+            std::cout << " kill enemis \n";
+        }
+        
 
         if (CheckCollisionCircles(playerCharacter.GetFuturePosition(), playerCharacter.TAILLECHARACTER + 1, listeEnnemis[i].GetPosition(), listeEnnemis[i].GetSize()))
         {
@@ -108,7 +120,7 @@ void inMainGameState::ennemisUpdate()
 
         for (size_t y = 0; y < limiteMap2.size(); y++)
         {
-            std::cout << " check col obstacle avec mur \n";
+            // std::cout << " check col obstacle avec mur";
             bool collisionNow = CheckCollisionCircleRec(
                 listeEnnemis[i].GetPosition(),
                 listeEnnemis[i].GetSize() + 1,
@@ -329,12 +341,35 @@ void inMainGameState::playerUpdate()
         v.y = 0;
         playerCharacter.SetVelocity(v);
         playerCharacter.SetStateIsGrounded(true);
+
+        for (size_t i = 0; i < listeEnnemis.size(); i++){
+            if (listeEnnemis[i].isDefeat)
+            {
+                listeCoin.push_back(coin(listeEnnemis[i].GetPosition()));
+                listeEnnemis.erase(listeEnnemis.begin()+i);
+                
+                  
+            }
+            
+        }
+
     }
     else
     {
         playerCharacter.SetStateIsGrounded(false);
     }
 
+    for (size_t i = 0; i < listeCoin.size(); i++)
+    {
+        if (CheckCollisionCircleRec(playerCharacter.GetFuturePosition(), playerCharacter.TAILLECHARACTER + 1, listeCoin[i].getRec()))
+        {
+            gM.coins += listeCoin[i].getRewardValue();
+            listeCoin.erase(listeCoin.begin()+i);
+            
+        }
+        
+    }
+    
 
 }
 
@@ -367,7 +402,14 @@ void inMainGameState::drawMainGame()
         debugEnnemis(i);
     }
 
+    for (size_t i = 0; i < listeCoin.size(); i++)
+    {
+        listeCoin[i].drawCoin();
+    }
+    
+
     DrawText( std::to_string(gM.playerTimer).c_str(),0,300,30,BLACK);
+    DrawText( std::to_string(gM.coins).c_str(),0,350,30,RED);
 
     // DrawCircle(velocity.x, velocity.y, TAILLECHARACTER, CHARACTER);
 }

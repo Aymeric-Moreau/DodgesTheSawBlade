@@ -11,6 +11,7 @@
 #include "mainMenuState.h"  // pauseMenuState gameOverState
 #include "pauseMenuState.h"
 #include "gameOverState.h"
+#include "../coin.h"
 #ifndef INMAINGAMESTATE
 
 class inMainGameState : public state
@@ -49,6 +50,8 @@ std::vector<ennemis> listeEnnemis;
 std::vector<ennemis> closeEnnemis;
 ennemis test;
 spawner spawnerPrincipal;
+
+std::vector<coin> listeCoin;
 
 int limiteMapGauche{area.x};
 int limiteMapDroite{area.x + area.width};

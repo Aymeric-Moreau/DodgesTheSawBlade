@@ -18,6 +18,7 @@ bool haveToChangeState = false;
 std::unique_ptr<state> StateSuivant = nullptr;
 std::vector<std::unique_ptr<state>> activeStates;
 float playerTimer = 0;
+int coins = 0;
 
 
 void addState(std::unique_ptr<state> newState);
