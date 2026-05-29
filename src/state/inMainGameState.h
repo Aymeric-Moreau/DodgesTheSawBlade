@@ -12,6 +12,7 @@
 #include "pauseMenuState.h"
 #include "gameOverState.h"
 #include "../coin.h"
+#include "../rini.h"
 #ifndef INMAINGAMESTATE
 
 class inMainGameState : public state

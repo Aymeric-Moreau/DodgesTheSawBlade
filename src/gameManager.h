@@ -2,7 +2,7 @@
 #include "raylib.h"
 #include "utils.h"
 #include "state/state.h"
-
+#include "rini.h"
 
 // Globals.h
 
@@ -19,6 +19,7 @@ std::unique_ptr<state> StateSuivant = nullptr;
 std::vector<std::unique_ptr<state>> activeStates;
 float playerTimer = 0;
 int coins = 0;
+rini_data config;
 
 
 void addState(std::unique_ptr<state> newState);

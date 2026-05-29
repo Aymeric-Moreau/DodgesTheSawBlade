@@ -8,14 +8,15 @@
 #include "state/state.h"
 #include "state/mainMenuState.h"
 #include "state/inMainGameState.h"
-
+#define RINI_IMPLEMENTATION
+#include "rini.h"
 
 
 // void addState(std::unique_ptr<state> newState);
 
 Color BACKGROUND = DARKBLUE;
-constexpr int SCREENWIDTH = 1540;
-constexpr int SCREENHEIGHT = 990;
+constexpr int SCREENWIDTH = 1920;// 1540
+constexpr int SCREENHEIGHT = 1080;// 990
 constexpr Vector2 SPAWNPOINT = {10, 12};
 player playerCharacter(SPAWNPOINT); // zone de spawn ennemis {250 , -550} {-260 , -550}
 

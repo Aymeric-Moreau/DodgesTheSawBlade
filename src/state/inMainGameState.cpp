@@ -50,6 +50,7 @@ inMainGameState::~inMainGameState()
     spawnerPrincipal = spawner();
     gM.playerTimer = 0;
     gM.coins = 0;
+    
 }
 
 void inMainGameState::applyGravity()
@@ -110,6 +111,17 @@ void inMainGameState::ennemisUpdate()
         {
             if (playerCharacter.GetAlive())
         {
+            gM.config = rini_load("data.ini");
+if (rini_get_value(gM.config, "highscore") < gM.coins)
+{
+    rini_set_value(&gM.config, "highscore", gM.coins, "meilleur score du joueur");
+}
+
+    rini_save(gM.config, "data.ini");
+
+    rini_unload(&gM.config);
+
+
             playerCharacter.Death();
             // gM.replaceState(std::make_unique<mainMenuState>());
             gM.haveToChangeState = true;

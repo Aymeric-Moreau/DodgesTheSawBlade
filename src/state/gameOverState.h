@@ -5,6 +5,7 @@
 #include "state.h"
 #include "../gameManager.h"
 #include "inMainGameState.h"
+#include "../rini.h"
 
 #ifndef GAMEOVERSTATE
 
