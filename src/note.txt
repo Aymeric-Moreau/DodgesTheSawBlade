@@ -17,7 +17,7 @@ override void updateDraw();
 // et tu fais la même chose avec mainMenu pauseMenue gameOver
 
 
-
+Direction 
 
 ta un state 
 

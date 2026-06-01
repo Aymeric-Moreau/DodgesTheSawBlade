@@ -15,8 +15,8 @@
 // void addState(std::unique_ptr<state> newState);
 
 Color BACKGROUND = DARKBLUE;
-constexpr int SCREENWIDTH = 1920;// 1540
-constexpr int SCREENHEIGHT = 1080;// 990
+constexpr int SCREENWIDTH = 1920/1.5;// 1540
+constexpr int SCREENHEIGHT = 1080/1.5;// 990
 constexpr Vector2 SPAWNPOINT = {10, 12};
 player playerCharacter(SPAWNPOINT); // zone de spawn ennemis {250 , -550} {-260 , -550}
 

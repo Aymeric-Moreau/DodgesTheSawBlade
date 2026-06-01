@@ -2,7 +2,6 @@
 #include "raylib.h"
 
 #include <algorithm>
-
 #ifndef PLAYERS
 
 class player
@@ -24,7 +23,13 @@ private:
     Vector2 jumpSpeed = {0, -800};
     bool alive = true;
 
+    
+
 public:
+    float minVeloX = -50000;
+    float maxVeloX = 50000;
+    float maxVeloY = 50000;
+    float minVeloY = -5000;
     player(Vector2 SpawnPoint);
     ~player();
 

@@ -342,8 +342,73 @@ void inMainGameState::spawnerManager()
 
 void inMainGameState::playerUpdate()
 {
-    playerCharacter.ApplyVelocity();
+            playerCharacter.ApplyVelocity();
     gM.playerTimer += GetFrameTime();
+
+
+        for (size_t y = 0; y < limiteMap2.size(); y++)
+        {
+            // std::cout << " check col obstacle avec mur";
+            bool collisionNow = CheckCollisionCircleRec(
+                playerCharacter.GetPosition(),
+                playerCharacter.TAILLECHARACTER + 1,
+                limiteMap2[y]->GetMain());
+
+            bool collisionNext = CheckCollisionCircleRec(
+                playerCharacter.GetFuturePosition(),
+                playerCharacter.TAILLECHARACTER + 1,
+                limiteMap2[y]->GetMain());
+            if ((collisionNow || collisionNext)) 
+            {
+
+                if (CheckCollisionCircleRec(
+                        playerCharacter.GetPosition(),
+                        playerCharacter.TAILLECHARACTER + 1,
+                        limiteMap2[y]->GetBas())) // il rebondi sur le dessous du rectangle  
+                {
+                    playerCharacter.minVeloY = playerCharacter.GetPosition().y;
+                }
+                else if (CheckCollisionCircleRec(
+                             playerCharacter.GetPosition(),
+                             playerCharacter.TAILLECHARACTER + 1,
+                             limiteMap2[y]->GetGauche())) // il rebondi sur le coté gauche du rectangle
+                {
+                    playerCharacter.maxVeloX = playerCharacter.GetPosition().x;
+                    //playerCharacter.minVeloX = playerCharacter.GetPosition().x;
+                    std::cout << " player overlap gauche \n";
+                }
+                else if (CheckCollisionCircleRec(
+                             playerCharacter.GetPosition(),
+                             playerCharacter.TAILLECHARACTER + 1,
+                             limiteMap2[y]->GetHaut())) // il rebondi sur le dessus du rectangle
+                {
+                    playerCharacter.maxVeloY = playerCharacter.GetPosition().y;
+                }
+                else if (CheckCollisionCircleRec(
+                             playerCharacter.GetPosition(),
+                             playerCharacter.TAILLECHARACTER + 1,
+                             limiteMap2[y]->GetDroite())) // il rebondi sur le coté droit du rectangle
+                {
+                    playerCharacter.minVeloX = playerCharacter.GetPosition().x;
+                    std::cout << " player overlap droite \n";
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     r = CheckCollisionCircleRec(playerCharacter.GetFuturePosition(), playerCharacter.TAILLECHARACTER + 1, ground);
     if (CheckCollisionCircleRec(playerCharacter.GetFuturePosition(), playerCharacter.TAILLECHARACTER + 1, ground)) // si la prochaine pose n'overlap pas le rectagle
@@ -392,13 +457,13 @@ void inMainGameState::drawMainGame()
     DrawRectangleRec(area, WHITE);
     DrawRectangleRec(ground2.GetMain(), GREEN);
     DrawRectangleRec(wallRight2.GetMain(), ORANGE);
-    DrawRectangleRec(wallLefts2.GetMain(), PINK);
+    DrawRectangleRec(wallLefts2.GetMain(), BEIGE);
 // std::cout << "update DRAW IN fonction STATE " << std::endl;
     for (size_t y = 0; y < limiteMap2.size(); y++)
     {
         obstacle *obs = limiteMap2[y];
 
-        DrawRectangleRec(obs->GetHaut(), GREEN);
+        DrawRectangleRec(obs->GetHaut(), MAGENTA);
         DrawRectangleRec(obs->GetBas(), YELLOW);
         DrawRectangleRec(obs->GetGauche(), BLUE);
         DrawRectangleRec(obs->GetDroite(), RED);

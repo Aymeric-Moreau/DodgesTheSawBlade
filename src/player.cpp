@@ -16,7 +16,9 @@ void player::SetPosition(Vector2 newPosition) { position = newPosition; }
 void player::ApplyVelocity() 
 {
     position = Vector2Add(position, Vector2Scale(velocity, GetFrameTime()));
-    position.x = std::clamp(position.x, (float)limiteMapGacuhe + TAILLECHARACTER / 2, (float)limiteMapDroite - TAILLECHARACTER / 2);
+    // position.x = std::clamp(position.x, (float)limiteMapGacuhe + TAILLECHARACTER / 2, (float)limiteMapDroite - TAILLECHARACTER / 2);
+        position.x = std::clamp(position.x, minVeloX, maxVeloX);
+    position.y = std::clamp(position.y, minVeloY, maxVeloY);
 }
 
 Vector2 player::GetFuturePosition()
@@ -25,9 +27,14 @@ Vector2 player::GetFuturePosition()
 }
 
 Vector2 player::GetVelocity() { return velocity; }
-void player::SetVelocity(Vector2 newVelocity) { velocity = newVelocity; }
-    void player::SetVelocityX(float newVeloX){velocity.x = newVeloX;}
-    void player::SetVelocityY(float newVeloY){velocity.y = newVeloY;}
+void player::SetVelocity(Vector2 newVelocity)
+{
+    velocity.x = std::clamp(newVelocity.x, minVeloX, maxVeloX);
+    velocity.y = std::clamp(newVelocity.y, minVeloY, maxVeloY);
+    std::cout << " player overlap " << minVeloX << " . " << maxVeloX << " | " << minVeloY << " . " << maxVeloY << "\n";
+}
+    void player::SetVelocityX(float newVeloX){velocity.x = std::clamp(newVeloX, minVeloX, maxVeloX);}
+    void player::SetVelocityY(float newVeloY){velocity.y = std::clamp(newVeloY, minVeloY, maxVeloY);}
 void player::ADDVelocity(Vector2 addedValue) { velocity = Vector2Add(velocity,addedValue); }
 void player::SubtractVelocity(Vector2 subtrackValue) { velocity -= subtrackValue; }
 
